@@ -33,9 +33,11 @@ All communications and local storage are safely encrypted using the latest:
 
 ## Unlock Code Required.
 
-To get the most out of Bot18, you need an 8-digit Unlock Code, purchasable for $49.99 (for a limited time!) at [https://bot18.net/beta](bot18.net). You can pay by credit card or crypto-currency, and the code never expires and grants you automatic code updates for the entire Bot18 product lifecycle.
+To get the most out of Bot18, you'll need an 8-digit Unlock Code, purchasable for $49.99 (for a limited time!) at [bot18.net/beta](https://bot18.net/beta). You can pay by credit card or crypto-currency, and the code never expires and grants you automatic code updates for the entire Bot18 product lifecycle.
 
-You can try out Bot18 for free (enter "guest" as the ZalgoNet username or set `c.channel='free'` in your conf file), but you experience will be very sub-optimal. The "free" engine distribution (also known as "trial mode") is heavly de-optimized (roughly 10x slower), does not support auto-trading strategies, and auto-quits after 15 minutes. If you like what you see, invest in an Unlock Code!
+Or, you can try out Bot18 for free (enter "guest" as the ZalgoNet username or set `c.channel='free'` in your conf file), but you experience will be very sub-optimal. The "free" engine distribution (also known as "trial mode") is heavly de-optimized (roughly 10x slower), does not support auto-trading strategies, and auto-quits after 15 minutes. If you like what you see, invest in an Unlock Code!
+
+For full licensing details, see [bot18.net/licensing](https://bot18.net/licensing).
 
 ## Configuration
 
