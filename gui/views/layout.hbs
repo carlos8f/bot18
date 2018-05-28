@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>{{title}}</title>
+  <link rel="shortcut icon" href="/favicon.ico">
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-20561928-4"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-20561928-4');
+  </script>
+  <script
+  src="https://code.jquery.com/jquery-3.3.1.min.js"
+  integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+  crossorigin="anonymous"></script>
+  <link href="https://fonts.googleapis.com/css?family=Ubuntu|Ubuntu+Condensed|Ubuntu+Mono" rel="stylesheet">
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body class="{{#if is_home}}home{{/if}}">
+  <div class="container">
+    {{#if is_home}}
+      <img class="logo" src="/assets/bot18_logo_transparent2.png">
+      <div class="sidebar">
+        {{> _partials/nav}}
+      </div>
+    {{else}}
+      <div class="sidebar">
+        <a href="/" class="logo-icon"><img src="/assets/bot18_icon.png"></a>
+        {{> _partials/nav}}
+      </div>
+    {{/if}}
+
+    <div class="content">
+      {{{content}}}
+    </div>
+
+    <div class="page-footer">
+      <p>
+      &mdash;Carlos<br>
+      23 May 2018<br><br>
+      <small>
+        Bot18 Crypto Trading Software &copy; 2018 <a href="https://github.com/carlos8f">Carlos Rodriguez</a>, All Rights Reserved.<br>
+        <label><a href="https://github.com/carlos8f/salty">Salty ID:</a> <code>2ijrRtV3aKDVDBotYv5FFNi46jRedum7aRfsB9tzxEoduqP5Wsv6DeMZSnsDjpFFKpXWqLsXBjmiodet1uxniFen</code></label>
+      </small>
+      </p>
+    </div>
+  </div>
+</body>
+</html>

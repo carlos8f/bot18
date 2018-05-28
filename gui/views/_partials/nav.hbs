@@ -1,0 +1,9 @@
+<ul class="nav">
+{{#if user}}
+<li class="{{#if is_dashboard}}active{{/if}}"><a href="/dashboard"><span>Dashboard</span></a></li>
+<li class="{{#if is_users}}active{{/if}}"><a href="/users"><span>Users</span></a></li>
+<li><a href="/logout"><span>Log Out</span></a></li>
+{{else}}
+<li class="{{#if is_login}}active{{/if}}"><a href="/login"><span>Log In</span></a></li>
+{{/if}}
+</ul>

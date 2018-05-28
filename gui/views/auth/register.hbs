@@ -1,0 +1,23 @@
+<h2><a href="/">BOT18</a> &rarr; <span>Register</span></h2>
+
+{{#if messages}}
+<div class="messages">
+{{#each messages}}
+  <div class="message {{type}}"><span>{{{text}}}</span></div>
+  {{/each}}
+</div>
+{{/if}}
+
+<p>
+<small>
+<a href="/login">Already signed up? &raquo;</a>
+</small>
+</p>
+
+<form method="post" action="/register">
+<p><label>E-mail<br><input type="text" size="50" name="email" value="{{post.email}}"></label></p>
+<p><label>Desired Username<br><input type="text" size="50" name="username" value="{{post.username}}"></label></p>
+<p><label>Desired Password (min. 10 chars)<br><input type="password" size="50" name="password"></label></p>
+<p><label>Confirm Password<br><input type="password" size="50" name="password2"></label></p>
+<p><input type="submit" value="Register" class="button"></p>
+</form>

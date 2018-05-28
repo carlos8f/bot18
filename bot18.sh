@@ -27,13 +27,14 @@
               '**%%%%%%**    ^"====="`
 
        (c) 2018 Carlos Rodriguez <carlos@s8f.org>
-                  All Rights Reserved.
-                   https://bot18.net/
+    License: MIT + Paid Unlock Code - See LICENSE.txt
+                  https://bot18.net/
 */
 
 // Sanity check, reject old node versions.
-if (!global || !global.process || !global.process.versions) {
-  console.error('You are running something that doesn\'t seem to be Node.js. Bot18 only runs on Node. https://nodejs.org/')
+if (!global || !global.process || !global.process.versions || !global.process.versions.node) {
+  console.error('You are running something that doesn\'t seem to be Node.js. Bot18 only runs on Node. Get it at https://nodejs.org/')
+  process.exit(18)
 }
 var semver = require('semver')
 var colors = require('colors')
@@ -45,7 +46,6 @@ if (semver.gt('8.3.0', process.versions.node)) {
 // Load engine dependencies.
 var path = require('path')
   , fs = require('fs')
-  , readline = require('readline')
   , _defaultsDeep = require('lodash.defaultsdeep')
 
 // Define the command.
@@ -55,6 +55,7 @@ cmd
   .arguments('[pair_specs...]')
   .description('Launch the Bot18 multi-pair trading engine, with built-in webserver exposing a GUI on port 8018. This is the main entry point.')
   .option('--code <code>', 'Specify an unlock code. Overrides the one saved at ~/.bot18/code')
+  .option('--channel <stable|unstable|free>', 'Select the Engine distribution channel (Default: stable)')
   .option('--conf <path>', 'path to optional conf overrides file')
   .option('--tasks <task-list>', 'override tasks for all selected pairs (e.g.: --tasks "watch,+record")')
   .option('--strats <strat-list>', 'override strats for all selected pairs (e.g.: --strat "sar,macd")')
@@ -88,6 +89,7 @@ try {
   local = require(path.resolve(process.cwd(), 'bot18.config'))
 }
 catch (e) {
+  if (e.code !== 'MODULE_NOT_FOUND' && e.code !== 'ENOENT') throw e
   local = {}
 }
 
@@ -135,7 +137,7 @@ conf.strat_override = cmd.strats
 cmd.args.forEach(function (arg) {
   var parts = arg.split(/\s*:\s*/)
   if (parts.length < 2) {
-    console.error(('Invalid arg: ' + arg).red)
+    debug(('Invalid arg: ' + arg).red)
     process.exit(2)
   }
   conf.pairs[parts[0]] = parts[1]
@@ -150,15 +152,25 @@ cmd.args.forEach(function (arg) {
 
 // Append the commander.js instance to the conf for later convenience.
 conf.cmd = cmd
-//
+
+// ZalgoNet MOTD.
 if (conf.motd) {
-  console.error()
-  console.error(fs.readFileSync(path.resolve(__dirname, 'motd.txt'), {encoding: 'utf8'}).cyan)
-  console.error()
+  fs.readFile(path.resolve(__dirname, 'motd.txt'), {encoding: 'utf8'}, function (err, motd) {
+    if (err) {
+      debug(('Error reading MOTD: ' + err.message).red)
+    }
+    else {
+      console.error('\n' + motd + '\n')
+    }
+    runEngine()
+  })
+}
+else {
+  runEngine()
 }
 
 // Get the latest engine code from code.bot18.net, verify its signature, and run it.
-;(function runEngine () {
+function runEngine () {
   require(path.resolve(__dirname, 'lib', 'get-engine'))(conf, function (err, engine) {
     if (err) {
       debug((err.message || ('Error: ' + (err.stack || err))).red)
@@ -169,4 +181,4 @@ if (conf.motd) {
     }
     engine()
   })
-})()
+}

@@ -1,0 +1,14 @@
+{{#if messages}}
+<div class="messages">
+{{#each messages}}
+  <div class="message {{type}}"><span>{{{text}}}</span></div>
+{{/each}}
+</div>
+{{/if}}
+
+{{#if user}}
+<h3>Welcome back, <span>{{user.username}}!</span></h3>
+{{else}}
+<h3 class="signup"><a href="/register">Sign Up &raquo;</a></h3>
+<h3 class="login"><a href="/login">Log In &raquo;</a></h3>
+{{/if}}

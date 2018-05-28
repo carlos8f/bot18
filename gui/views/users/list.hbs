@@ -1,0 +1,15 @@
+<h2><a href="/">BOT18</a> &rarr; <span>Users</span></h2>
+
+<table>
+<thead>
+<tr class="condensed"><th>USERNAME</th><th>SIGNUP DATE</th></tr>
+</thead>
+<tbody>
+{{#each users}}
+<tr>
+  <td class="username"><span>{{username}}</span></td>
+  <td class="condensed">{{signup_date}}</td>
+</tr>
+{{/each}}
+</tbody>
+</table>

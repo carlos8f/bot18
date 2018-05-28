@@ -1,0 +1,272 @@
+body {
+  font-family: 'Ubuntu', sans-serif;
+  background-color: #111;
+  background-image: url(/assets/bg.png);
+  color: #aaa;
+  margin: 0;
+  padding: 10px;
+}
+.container {
+  max-width: 1100px;
+  margin: auto;
+}
+.content {
+  padding: 50px 10px 50px 10px;
+  max-width: 650px;
+}
+.home .content {
+  padding-left: 50px;
+  padding-top: 0;
+  max-width: 600px;
+}
+.home .sidebar {
+  width: 250px;
+  float: right;
+  margin-left: 20px;
+  position: relative;
+}
+.sidebar {
+  float: none;
+  margin-left: 0;
+  position: fixed;
+  right: 0;
+  top: 0;
+  width: 250px;
+  z-index: 100;
+}
+.logo-icon {
+  display: block;
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 75px;
+  height: 75px;
+}
+p, li {
+  line-height: 1.7em;
+  color: #ccc;
+  font-size: 0.9em;
+  text-align: justify;
+}
+label {
+  color: #aaa;
+}
+input, textarea, button {
+  font-family: 'Ubuntu Mono', monospace;
+  padding: 10px;
+  font-size: 1em;
+  background-color: black;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  margin: 10px 20px;
+  color: #eee;
+  width: 80%;
+}
+input[type="checkbox"] {
+  width: auto;
+  margin: 0 10px 0 20px;
+  padding: 0;
+  border-radius: 0;
+  border: none;
+  background-color: inherit;
+}
+input[name="username"], textarea, input[name="email"] {
+  font-family: 'Ubuntu Mono', monospace;
+}
+select {
+  -webkit-appearance: none; 
+  -moz-appearance: none;
+  appearance: none;
+  padding: 5px 5px 5px 20px;
+  background-color: #222;
+  color: #eee;
+}
+select::-ms-expand { 
+  display: none; /* hide the default arrow in ie10 and ie11 */
+}
+/* target Internet Explorer 9 to undo the custom arrow */
+@media screen and (min-width:0\0) {
+  select {
+    background-image:none\9;
+    padding: 5px\9;
+  } 
+}
+.radios {
+  margin: 20px 0 20px 40px;
+}
+.radios label {
+  display: block;
+}
+.radios input {
+  width: auto;
+  margin: 0 10px 0 0;
+}
+.g-recaptcha {
+  margin: 0 0 0 20px;
+}
+a {
+  color: #0e4;
+  text-decoration: none;
+  cursor: pointer;
+  display: inline-block;
+  padding: 5px;
+  margin: 1px;
+}
+a:hover {
+  color: black;
+  background-color: #0e4;
+}
+.logo {
+  width: 100%;
+}
+h2 {
+  font-family: 'Ubuntu', sans-serif;
+  font-weight: bold;
+  margin: 0 0 40px 0;
+}
+h2 span, .username span {
+  padding: 5px;
+  background-color: #7ff;
+  color: black;
+}
+.button, button {
+  background-color: #ccc;
+  color: black;
+  cursor: pointer;
+  width: auto;
+}
+.button:hover, button:hover {
+  background-color: white;
+}
+h3, h4, h5 {
+  font-family: 'Ubuntu', sans-serif;
+  font-weight: bold;
+  margin: 20px 0 0 0;
+}
+h3 span {
+  color: black;
+  background-color: #f80;
+  padding: 5px;
+}
+h3.signup, h3.login {
+  display: block;
+  margin: 0 0 20px 40px;
+  width: auto;
+  display: inline-block;
+  padding: 0;
+}
+h3.signup a, h3.login a {
+  color: black;
+  background-color: #f80;
+  padding: 5px;
+}
+h3.signup a:hover, h3.login a:hover {
+  background-color: #f40;
+}
+.messages {
+  margin-bottom: 20px;
+}
+.messages strong {
+  color: black;
+}
+.message {
+  margin: 10px;
+}
+.message span {
+  padding: 5px;
+  color: black;
+  display: inline-block;
+  border-radius: 10px;
+}
+.success span {
+  background-color: #0e4;
+}
+.error span {
+  background-color: #f40;
+  color: white;
+}
+.info span {
+  background-color: #fcc;
+  color: #402;
+}
+.info strong {
+  color: #a44;
+}
+.info a {
+  background-color: #0e4;
+  color: black;
+}
+.info a:hover {
+  background-color: #000;
+  color: #0e4;
+}
+.home-footer {
+  color: #aaa;
+  text-align: center;
+}
+strong {
+  color: white;
+}
+code, pre {
+  color: white;
+  font-family: 'Ubuntu Mono', monospace;
+  font-size: 1.3em;
+  background-color: #333;
+  padding: 5px;
+}
+.page-footer {
+  margin-top: 20px;
+  clear: both;
+}
+.page-footer p {
+  text-align: center;
+  color: #666;
+}
+.page-footer code {
+  background-color: #235;
+  color: #4cf;
+  font-size: 0.8em;
+}
+table {
+  width: 100%;
+  margin: 20px;
+  border: 1px solid #ccc;
+}
+th {
+  border-bottom: 1px dashed #666;
+}
+th, td {
+  padding: 5px;
+  border-collapse: collapse;
+}
+td {
+  border-right: 1px solid #666;
+  text-align: center;
+}
+input[name="code_id"] {
+  font-family: 'Ubuntu Mono', monospace;
+  font-size: 2.5em;
+  width: auto;
+}
+.radios label {
+  cursor: pointer;
+}
+.condensed {
+  font-family: 'Ubuntu Condensed', sans-serif;
+}
+.nav {
+  width: 200px;
+  font-size: 0.8em;
+  margin: 0;
+  padding: 0;
+  text-align: right;
+}
+.nav li {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.nav li.active a {
+  color: black;
+  background-color: #0e4;
+}
