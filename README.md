@@ -65,4 +65,4 @@ Cheers and happy trading,
 
 [@carlos8f](https://github.com/carlos8f), May 28th 2018
 
-Salty ID: `3t27msBTpN2Mn2LP68ZFLUUo3AN37aoGerUFPHdus9tFJg3hw7upmnY9c7nQ9fv1EFFF9nxiU9JzFSYPRAnx8Age`
+[Salty](https://github.com/carlos8f/salty) ID: `3t27msBTpN2Mn2LP68ZFLUUo3AN37aoGerUFPHdus9tFJg3hw7upmnY9c7nQ9fv1EFFF9nxiU9JzFSYPRAnx8Age`
