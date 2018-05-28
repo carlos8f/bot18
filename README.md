@@ -22,7 +22,7 @@ $ npx bot18
 
 ## Welcome To ZalgoNet. NetSec Is Our Thing.
 
-If running Bot18 for the first time, you'll be asked to log into your ZalgoNet account (browser-based signup form is at [https://bot18.net/register](bot18.net/register)) or you can create a new account through the CLI.
+If running Bot18 for the first time, you'll be asked to log into your ZalgoNet account (browser-based signup form is at [bot18.net/register](https://bot18.net/register)) or you can create a new account through the CLI.
 
 All communications and local storage are safely encrypted using the latest:
 
