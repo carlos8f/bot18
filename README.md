@@ -59,7 +59,7 @@ The current version is an early proof-of-concept, and supports:
 
 - For announcements and progress updates, [follow @bot18_net on Twitter!](https://twitter.com/bot18_net)
 - To support Bot18 development, [Buy a shirt, hoodie or mug!](https://shop.bot18.net/)
-- For inquiries, contact us through the [https://bot18.net/](bot18.net) website.
+- For inquiries, contact us through the [bot18.net](https://bot18.net) website.
 
 Cheers and happy trading,
 
