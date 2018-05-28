@@ -8,15 +8,6 @@
 
                         Welcome to the Bot18 Public Beta!
 
-
-    Bot18 is "online" software, designed to be invoked without installing.
-    The only pre-requisite is having Node.js >= 8.3.0 installed.
-    The recommended way to launch is with:
-
-        npx bot18
-
-    For configuration options, see: https://www.npmjs.com/package/bot18
-
     Beta Features (So far)
 
     The current version is an early proof-of-concept, and supports:

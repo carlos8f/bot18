@@ -160,7 +160,7 @@ if (conf.motd) {
       debug(('Error reading MOTD: ' + err.message).red)
     }
     else {
-      console.error('\n' + motd + '\n')
+      console.error('\n' + motd.cyan + '\n')
     }
     runEngine()
   })
