@@ -253,14 +253,11 @@ c.notifiers.telegram.chat_id = 'YOUR-CHAT-ID' // the id of the chat the messages
 */
 
 // Misc stuff.
-// Display MOTD at startup.
+// Engine version to use. Defaults to latest stable build.
+// Also available: "unstable" (latest dev build) and "free" (crippled free version)
+c.channel = 'stable'
+// Display ZalgoNet MOTD at startup.
 c.motd = true
-// Timeout durations.
-c.launch_timeout = 30000
-c.graceful_exit_timeout = 1000
-// Verify engine downloads from code.bot18.net against this "master" Salty pubkey.
-// see: https://github.com/carlos8f/salty
-c.master_pubkey = '3t27msBTpN2Mn2LP68ZFLUUo3AN37aoGerUFPHdus9tFJg3hw7upmnY9c7nQ9fv1EFFF9nxiU9JzFSYPRAnx8Age'
 // Directory for storing persistent settings, etc.
 // Default: ~/.bot18
 c.home = require('path').resolve(require('home-or-tmp'), '.bot18')
@@ -269,6 +266,9 @@ c.port_mapping = {
   'engine': '127.0.0.1:1818',
   'gui': '127.0.0.1:8018'
 }
-// Engine version to use. Not implemented yet.
-//c.branch = 'master'
-//c.tag = ''
+// Timeout durations.
+c.launch_timeout = 30000
+c.graceful_exit_timeout = 1000
+// Verify engine downloads from code.bot18.net against this "master" Salty pubkey.
+// see: https://github.com/carlos8f/salty
+c.master_pubkey = '3t27msBTpN2Mn2LP68ZFLUUo3AN37aoGerUFPHdus9tFJg3hw7upmnY9c7nQ9fv1EFFF9nxiU9JzFSYPRAnx8Age'
