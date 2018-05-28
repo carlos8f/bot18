@@ -27,4 +27,4 @@
     For more info on this release, see: https://www.npmjs.com/package/bot18
     Follow the latest news via Twitter: https://twitter.com/bot18_net
 
-    --Carlos, May 27th 2018
+    --Carlos, May 28th 2018
