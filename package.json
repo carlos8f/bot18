@@ -1,0 +1,61 @@
+{
+  "name": "bot18",
+  "version": "0.0.9",
+  "description": "A commercial high-frequency cryptocurrency trading bot by Zenbot creator @carlos8f",
+  "bin": {
+    "bot18": "./bot18.sh"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/carlos8f/bot18.git"
+  },
+  "dependencies": {
+    "bytes": "^3.0.0",
+    "cli-prompt": "^0.6.0",
+    "colors": "^1.3.0",
+    "commander": "github:carlos8f/commander.js",
+    "debug": "^3.1.0",
+    "home-or-tmp": "^3.0.0",
+    "lodash.defaultsdeep": "^4.6.0",
+    "lodash.get": "^4.4.2",
+    "micro-request": "^666.0.10",
+    "moment": "^2.22.1",
+    "pempal": "^1.0.2",
+    "salty": "^4.1.3",
+    "semver": "^5.5.0"
+  },
+  "keywords": [
+    "crypto",
+    "btc",
+    "bitcoin",
+    "ether",
+    "ethereum",
+    "eth",
+    "litecoin",
+    "ltc",
+    "cryptocurrency",
+    "currency",
+    "trading",
+    "algo",
+    "trader",
+    "bot",
+    "daemon",
+    "profit",
+    "bacon",
+    "zalgo",
+    "bot18.net",
+    "#bot18",
+    "carlos8f",
+    "zenbot"
+  ],
+  "author": "Carlos Rodriguez <carlos@s8f.org>",
+  "homepage": "https://bot18.net/",
+  "bugs": "https://github.com/carlos8f/bot18/issues",
+  "license": "https://bot18.net/licensing",
+  "bundleDependencies": [
+    "commander"
+  ],
+  "engines": {
+    "node": ">=8.3.0"
+  }
+}

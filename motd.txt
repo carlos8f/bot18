@@ -1,0 +1,39 @@
+          |'''''||          '||                  '|.   '|'           .   
+              .|'    ....    ||    ... .   ...    |'|   |    ....  .||.  
+             ||     '' .||   ||   || ||  .|  '|.  | '|. |  .|...||  ||   
+           .|'      .|' ||   ||    |''   ||   ||  |   |||  ||       ||   
+          ||......| '|..'|' .||.  '||||.  '|..|' .|.   '|   '|...'  '|.' 
+                                 .|....'                                 
+                                                                         
+
+                        Welcome to the Bot18 Public Beta!
+
+
+    Bot18 is "online" software, designed to be invoked without installing.
+    The only pre-requisite is having Node.js >= 8.3.0 installed.
+    The recommended way to launch is with:
+
+        npx bot18
+
+    For configuration options, see: https://www.npmjs.com/package/bot18
+
+    Beta Features (So far)
+
+    The current version is an early proof-of-concept, and supports:
+
+      - Monitoring live trade and orderbook streams from Bitfinex
+          and Coinbase Pro simultaneously.
+      - Coinbase Pro (formerly known as GDAX) live trading.
+      - Tracks your account balance and reports profit/loss when you trade.
+      - Press the "l" key to list available key commands.
+      - Supports executing manual trades when yellow "M" is displayed
+          at the end of the console columns.
+      - Enter "A" (capitalized) to enable auto-trading.
+      - The early auto-trading strategy is based on orderbook snapshot
+          power-imbalance, and is highly experimental. Currently, the
+          Beta's auto-trading strategy is not recommended for serious trading.
+
+    For more info on this release, see: https://www.npmjs.com/package/bot18
+    Follow the latest news via Twitter: https://twitter.com/bot18_net
+
+    --Carlos, May 27th 2018
