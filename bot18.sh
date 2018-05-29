@@ -123,9 +123,9 @@ if (!process.env.DEBUG) {
 // Load the debug module now that we have the conf.debug flag parsed.
 var debug = require('debug')('launcher')
 
-// Apply code override.
-if (cmd.code) {
-  conf.code = cmd.code
+// Apply channel override.
+if (cmd.channel) {
+  conf.channel = cmd.channel
 }
 
 // Apply task/strat overrides.
@@ -146,7 +146,7 @@ cmd.flags = ['headless', 'non_interactive', 'reset_profit', 'debug']
 // Add boolean flags to conf.
 cmd.flags.forEach(function (k) {
   if (cmd[k] === true) {
-    conf[k] = cmd[k]
+    conf[k] = true
   }
 })
 
