@@ -14,11 +14,7 @@
          folder as your Bot18 install
 */
 // export a hash-map of configuration variables.
-var c = module.exports = {
-  // Enter your Bot18 Unlock Code, if you have one.
-  // To purchase a code, visit https://bot18.net/
-  code: ''
-}
+var c = module.exports = {}
 
 /*
   Section 1: Multi-Pair selection.

@@ -6,6 +6,7 @@
                                  .|....'                                 
                                                                          
 
+                               MOTD: May 29th 2018
                         Welcome to the Bot18 Public Beta!
 
     Beta Features (So far)
@@ -27,4 +28,4 @@
     For more info on this release, see: https://www.npmjs.com/package/bot18
     Follow the latest news via Twitter: https://twitter.com/bot18_net
 
-    --Carlos, May 28th 2018
+    --Carlos

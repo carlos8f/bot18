@@ -48,21 +48,20 @@ var path = require('path')
   , fs = require('fs')
   , _defaultsDeep = require('lodash.defaultsdeep')
 
+process.env.BOT18_LAUNCHER_VERSION = 'v' + require(path.resolve(__dirname, 'package.json')).version
+
 // Define the command.
 var cmd = require('commander')
 cmd._name = 'bot18'
 cmd
+  .version(process.env.BOT18_LAUNCHER_VERSION)
   .arguments('[pair_specs...]')
   .description('Launch the Bot18 multi-pair trading engine, with built-in webserver exposing a GUI on port 8018. This is the main entry point.')
-  .option('--code <code>', 'Specify an unlock code. Overrides the one saved at ~/.bot18/code')
   .option('--channel <stable|unstable|free>', 'Select the Engine distribution channel (Default: stable)')
   .option('--conf <path>', 'path to optional conf overrides file')
-  .option('--tasks <task-list>', 'override tasks for all selected pairs (e.g.: --tasks "watch,+record")')
-  .option('--strats <strat-list>', 'override strats for all selected pairs (e.g.: --strat "sar,macd")')
-  .option('--headless', 'Do not launch a built-in webserver GUI.')
+  .option('--headless', 'Do not launch a built-in webserver/GUI.')
   .option('--non_interactive', 'ignore key commands')
-  .option('--reset_profit', 'reset profit calculation to zero')
-  .option('--reset_inventory', 'appraise starting asset balance at market value')
+  .option('--reset_profit', 'reset profit/loss calculation to zero')
   .option('--debug', 'show detailed output')
 
 // Parse CLI input.
@@ -142,9 +141,10 @@ cmd.args.forEach(function (arg) {
   }
   conf.pairs[parts[0]] = parts[1]
 })
+cmd.flags = ['headless', 'non_interactive', 'reset_profit', 'debug']
 
 // Add boolean flags to conf.
-;['headless', 'reset_profit', 'reset_inventory', 'debug'].forEach(function (k) {
+cmd.flags.forEach(function (k) {
   if (cmd[k] === true) {
     conf[k] = cmd[k]
   }
@@ -169,11 +169,11 @@ else {
   runEngine()
 }
 
-// Get the latest engine code from code.bot18.net, verify its signature, and run it.
+// Get the latest engine code from ZalgoNet, verify its signature, and run it.
 function runEngine () {
   require(path.resolve(__dirname, 'lib', 'get-engine'))(conf, function (err, engine) {
     if (err) {
-      debug((err.message || ('Error: ' + (err.stack || err))).red)
+      debug((err.message || ('Runtime Error: ' + (err.stack || err))).red)
       if (err.retry) {
         return setTimeout(runEngine, 2000)
       }

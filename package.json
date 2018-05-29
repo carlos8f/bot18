@@ -10,6 +10,7 @@
     "url": "https://github.com/carlos8f/bot18.git"
   },
   "dependencies": {
+    "bcryptjs": "^2.4.3",
     "bytes": "^3.0.0",
     "cli-prompt": "^0.6.0",
     "colors": "^1.3.0",
