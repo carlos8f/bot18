@@ -195,12 +195,6 @@ c.notifiers.xmpp.host = 'domain.com'
 c.notifiers.xmpp.port = 5222
 c.notifiers.xmpp.to = 'MeMyselfAndI@domain.com'
 
-// pushbullets config
-c.notifiers.pushbullet = {}
-c.notifiers.pushbullet.enabled = false // false pushbullets disabled; true pushbullets enabled (key should be correct)
-c.notifiers.pushbullet.key = 'YOUR-API-KEY'
-c.notifiers.pushbullet.deviceID = 'YOUR-DEVICE-ID'
-
 // ifttt config
 c.notifiers.ifttt = {}
 c.notifiers.ifttt.enabled = false // false ifttt disabled; true ifttt enabled (key should be correct)
