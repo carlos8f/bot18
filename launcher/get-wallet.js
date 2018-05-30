@@ -83,7 +83,6 @@ module.exports = function getWallet (cb) {
             if (err) return cb(err)
             bot18.wallet.pubkey = salty.pubkey.parse(id_salty_pub)
             bot18.pubkey = bot18.wallet.pubkey
-            console.log(bot18.wallet.pubkey)
             cb()
           })
         })
