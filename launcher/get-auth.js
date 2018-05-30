@@ -1,5 +1,7 @@
+var bot18 = global.BOT18
+
 /*
-lib.getWallet(conf, cb)
+  launcher.getWallet(cb)
 
   - Creates ~/.bot18 directory if it doesn't exist
   - Creates an anonymous, unencrypted Salty wallet at ~/.bot18/id_salty
@@ -9,29 +11,33 @@ lib.getWallet(conf, cb)
       caches it at ~/.bot18/auth_token
   - Subsequent API calls include auth_token in headers,
       to bind to the associated user account and claimed codes.
-
 */
 
-var salty = require('salty')
-var fs = require('fs')
-var path = require('path')
-var prompt = require('cli-prompt')
-var debug = require('debug')('launcher')
-var pempal = require('pempal')
-var mr = require('micro-request')
-var _get = require('lodash.get')
-
-module.exports = function (conf, cb) {
+module.exports = function getAuth (cb) {
+  var path = require('path')
+  var r = path.resolve
+  var fs = require('fs')
+  var debug = require('debug')('launcher')
+  var prompt = require('cli-prompt')
+  var mr = require('micro-request')
+  var pempal = require('pempal')
+  var salty = require('salty')
+  var async = require('async')
+  var conf = bot18.conf
   // set up the settings dir if it doesn't exist.
   fs.stat(conf.home, function (err, stat) {
     if (err && err.code === 'ENOENT') {
       debug('Creating ~/.bot18 (chmod 0700)'.grey)
       fs.mkdir(conf.home, parseInt('0700', 8), function (err) {
         if (err) return cb(err)
-        debug('Creating ~/.bot18/builds (chmod 0700)'.grey)
-        fs.mkdir(path.resolve(conf.home, 'builds'), parseInt('0700', 8), function (err) {
+        debug('Creating ~/.bot18/config.js (chmod 0600)'.grey)
+        require(r(__dirname, 'save-conf'))(r(conf.home, 'config.js'), function (err) {
           if (err) return cb(err)
-          withHome()
+          debug('Creating ~/.bot18/builds (chmod 0700)'.grey)
+          fs.mkdir(r(conf.home, 'builds'), parseInt('0700', 8), function (err) {
+            if (err) return cb(err)
+            withHome()
+          })
         })
       })
     }
@@ -46,18 +52,18 @@ module.exports = function (conf, cb) {
   // Set up the local Salty wallet (ephemeral, unencrypted,
   //   used for verifying downloads from ZalgoNet)
   function withHome () {
-    var id_salty_path = path.resolve(conf.home, 'id_salty')
+    var id_salty_path = r(conf.home, 'id_salty')
     fs.stat(id_salty_path, function (err, stat) {
       if (err && err.code === 'ENOENT') {
         // generate a new Salty wallet.
         debug('Creating ~/.bot18/id_salty (chmod 0600)'.grey)
-        var wallet = salty.wallet.create()
-        fs.writeFile(id_salty_path, wallet.toPEM() + '\n', {mode: parseInt('0600', 8)}, function (err) {
+        bot18.wallet = salty.wallet.create()
+        bot18.pubkey = bot18.wallet.pubkey
+        fs.writeFile(id_salty_path, bot18.wallet.toPEM() + '\n', {mode: parseInt('0600', 8)}, function (err) {
           if (err) return cb(err)
           debug('Creating ~/.bot18/id_salty.pub (chmod 0644)'.grey)
-          fs.writeFile(path.resolve(conf.home, 'id_salty.pub'), wallet.pubkey.toString() + '\n', {mode: parseInt('0644', 8)}, function (err) {
+          fs.writeFile(r(conf.home, 'id_salty.pub'), bot18.pubkey.toString() + '\n', {mode: parseInt('0644', 8)}, function (err) {
             if (err) return cb(err)
-            conf.wallet = wallet
             withWallet()
           })
         })
@@ -70,15 +76,14 @@ module.exports = function (conf, cb) {
           if (err) return cb(err)
           try {
             var pem = pempal.decode(id_salty, {tag: 'SALTY WALLET'})
-            var wallet = salty.wallet.parse(pem.body)
+            bot18.wallet = salty.wallet.parse(pem.body)
           }
           catch (e) {
             return cb(e)
           }
-          fs.readFile(path.resolve(conf.home, 'id_salty.pub'), {encoding: 'utf8'}, function (err, id_salty_pub) {
+          fs.readFile(r(conf.home, 'id_salty.pub'), {encoding: 'utf8'}, function (err, id_salty_pub) {
             if (err) return cb(err)
-            wallet.pubkey = salty.pubkey.parse(id_salty_pub)
-            conf.wallet = wallet
+            bot18.wallet.pubkey = bot18.pubkey = salty.pubkey.parse(id_salty_pub)
             withWallet()
           })
         })
@@ -89,14 +94,14 @@ module.exports = function (conf, cb) {
   // Determine our auth status with ZalgoNet.
   function withWallet () {
     // Check for cached auth_token.
-    fs.readFile(path.resolve(conf.home, 'auth.json'), {encoding: 'utf8'}, function (err, auth_json) {
+    fs.readFile(r(conf.home, 'auth.json'), {encoding: 'utf8'}, function (err, auth_json) {
       if (err && err.code !== 'ENOENT') {
         return cb(err)
       }
       if (auth_json) {
         // We have a cached auth_token, validate it with ZalgoNet
         try {
-          conf.auth = JSON.parse(auth_json)
+          bot18.auth = JSON.parse(auth_json)
           debug('Using cached auth: ~/.bot18/auth.json'.grey)
         }
         catch (e) {
@@ -105,12 +110,12 @@ module.exports = function (conf, cb) {
         }
         var opts = {
           headers: {
-            'x-bot18-auth': conf.auth.auth_token,
+            'x-bot18-auth': bot18.auth.auth_token,
             'user-agent': 'bot18/' + process.env.BOT18_LAUNCHER_VERSION
           }
         }
         debug('Validating cached auth with ZalgoNet - Please stand by...'.grey)
-        mr('https://code.bot18.net/auth/' + conf.auth.user_info.username, opts, function (err, resp, body) {
+        mr('https://code.bot18.net/auth/' + bot18.auth.user_info.username, opts, function (err, resp, body) {
           if (err) {
             return cb(new Error('Your network connection is down. Please try again later.'))
           }
@@ -118,7 +123,8 @@ module.exports = function (conf, cb) {
             case 200:
               if (body && body.authorized) {
                 // We good.
-                withAuth(body)
+                bot18.auth = body
+                withAuth()
               }
               else {
                 cb(new Error('Unreadable response from ZalgoNet. The REST API may have changed, or your DNS may be tampered with.'))
@@ -145,7 +151,7 @@ module.exports = function (conf, cb) {
     // Request ZalgoNet credentials from stdin.
     function getNewAuth () {
       debug(' ' + ' Beep Boop, This is Bot18! '.yellow.inverse)
-      if (!conf.auth) {
+      if (!bot18.auth) {
         debug('      I\'m performing intial setup to connect your '.yellow + 'ZalgoNet'.cyan +' account.'.yellow)
         debug('      Your information will be handled securely and encrypted when ever possible.'.yellow)
         debug('      If you don\'t have a '.yellow + 'ZalgoNet'.cyan + ' account yet, sign up at: '.yellow + 'https://bot18.net/register'.green.underline)
@@ -222,7 +228,7 @@ module.exports = function (conf, cb) {
     var opts = {
       data: {
         password: password,
-        pubkey: conf.wallet.pubkey.pubkey
+        pubkey: bot18.pubkey.pubkey
       },
       headers: {
         'user-agent': 'bot18/' + process.env.BOT18_LAUNCHER_VERSION
@@ -237,7 +243,8 @@ module.exports = function (conf, cb) {
         case 200:
           if (body && body.authorized) {
             // We good.
-            withAuth(body)
+            bot18.auth = body
+            withAuth()
           }
           else {
             cb(new Error('Unreadable response from ZalgoNet. The REST API may have changed, or your DNS may be tampered with.'))
@@ -258,13 +265,12 @@ module.exports = function (conf, cb) {
     })
   }
 
-  function withAuth (auth) {
-    conf.auth = auth
-    debug('Success!'.green + ' You are logged into '.grey + 'ZalgoNet'.cyan + ' as: '.grey + conf.auth.user_info.username.yellow)
+  function withAuth () {
+    debug('Success!'.green + ' You are logged into '.grey + 'ZalgoNet'.cyan + ' as: '.grey + bot18.auth.user_info.username.yellow)
     debug('Updating ~/.bot18/auth.json (chmod 0600)'.grey)
-    fs.writeFile(path.resolve(conf.home, 'auth.json'), JSON.stringify(conf.auth, null, 2), {encoding: 'utf8', mode: parseInt('0600', 8)}, function (err) {
+    fs.writeFile(r(conf.home, 'auth.json'), JSON.stringify(bot18.auth, null, 2), {encoding: 'utf8', mode: parseInt('0600', 8)}, function (err) {
       if (err) return cb(err)
-      cb(null, conf)
+      cb()
     })
   }
 }

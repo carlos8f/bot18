@@ -1,5 +1,5 @@
 /*
-  Bot18 Configuration (copied from v0.2.3)
+  Bot18 Configuration (copied from v{{pkg.version}})
   https://bot18.net/
 
   The file bot18.config-sample.js represents the defaults.
@@ -39,7 +39,7 @@ c.motd = true
 //   Files written here will be chmod 0600, subdirectories 0700
 //   "~/" will be expanded to your home directory's absolute path,
 //   ..or a tmp directory, as a fallback.
-c.home = '~/.bot18'
+c.home = '{{home}}'
 
 /*
   Section 2: Multi-Pair selection.
@@ -104,8 +104,9 @@ c.home = '~/.bot18'
 
 */
 c.pairs - {
-  'bfx.*-usd': 'watch',
-  'gdax.*-usd': 'watch',
+{{#each pairs}}
+  '{{@key}}': '{{this}}',
+{{/each}}
 }
 
 /*
@@ -133,7 +134,9 @@ c.pairs - {
 
 */
 c.strats = {
-  '*': 'noop',
+{{#each strats}}
+  '{{@key}}': '{{this}}',
+{{/each}}
 }
 
 /*
@@ -156,16 +159,16 @@ c.strats = {
 
 // to enable GDAX trading, enter your API credentials:
 c.gdax = {}
-c.gdax.key = 'YOUR-API-KEY'
-c.gdax.b64secret = 'YOUR-BASE64-SECRET'
-c.gdax.passphrase = ''
+c.gdax.key = '{{gdax.key}}'
+c.gdax.b64secret = '{{gdax.b64secret}}'
+c.gdax.passphrase = '{{gdax.passphrase}}'
 
 // to enable Bitfinex trading, enter your API credentials:
 c.bfx = {}
-c.bfx.key = 'YOUR-API-KEY'
-c.bfx.secret = 'YOUR-SECRET'
+c.bfx.key = '{{bfx.key}}'
+c.bfx.secret = '{{bfx.secret}}'
 // May use 'exchange' or 'margin' wallet balances
-c.bfx.wallet = 'exchange'
+c.bfx.wallet = '{{bfx.wallet}}'
 
 
 /*
@@ -176,17 +179,21 @@ c.bfx.wallet = 'exchange'
   For information on MongoDB, visit https://www.mongodb.com/
 */
 c.mongo = {}
-c.mongo.enabled = false
-c.mongo.db = 'bot18'
-c.mongo.host = process.env.MONGODB_PORT_27017_TCP_ADDR || 'localhost'
-c.mongo.port = 27017
-c.mongo.username = null
-c.mongo.password = null
+c.mongo.enabled = {{#if mongo.enabled}}true{{else}}false{{/if}}
+c.mongo.db = '{{mongo.db}}'
+c.mongo.host = process.env.MONGODB_PORT_27017_TCP_ADDR || '{{mongo.host}}'
+c.mongo.port = {{#if mongo.port}}{{mongo.port}}{{else}}null{{/if}}
+c.mongo.username = {{#if mongo.username}}'{{mongo.username}}'{{else}}null{{/if}}
+c.mongo.password = {{#if mongo.username}}'{{mongo.username}}'{{else}}null{{/if}}
+{{#if mongo.server_uri}}
+c.mongo.server_uri = '{{mongo.server_uri}}'
+{{else}}
 // Or to use a specific connection string,
 // uncomment the following line:
 //c.mongo.server_uri = 'mongodb://user@password:host/db?params'
-c.mongo.replica_set = null
-c.mongo.auth_mechanism = null
+{{/if}}
+c.mongo.replica_set = {{#if mongo.replica_set}}'{{mongo.replica_set}}'{{else}}null{{/if}}
+c.mongo.auth_mechanism = {{#if mongo.auth_mechanism}}'{{mongo.auth_mechanism}}'{{else}}null{{/if}}
 
 /*
   Section 5: Internationalization and Localization
@@ -198,7 +205,7 @@ c.mongo.auth_mechanism = null
 
   Currently, there are no translations other than English.
 */
-c.locality = 'en'
+c.locality = '{{locality}}'
 
 
 /*
@@ -213,9 +220,9 @@ c.notifiers = {}
 
 // pushover config
 c.notifiers.pushover = {}
-c.notifiers.pushover.enabled = false
-c.notifiers.pushover.api_token = 'YOUR-API-TOKEN'
-c.notifiers.pushover.user_key = 'YOUR-USER-KEY'
+c.notifiers.pushover.enabled = {{#if notifiers.pushover.enabled}}true{{else}}false{{/if}}
+c.notifiers.pushover.api_token = '{{notifiers.pushover.api_token}}'
+c.notifiers.pushover.user_key = '{{notifiers.pushover.user_key}}'
 
 /*
   Section 7: Internal configurations.
@@ -225,13 +232,14 @@ c.notifiers.pushover.user_key = 'YOUR-USER-KEY'
 */
 // Internal port mapping.
 c.port_mapping = {
-  'engine': '127.0.0.1:1818',
-  'gui': '127.0.0.1:8018',
+{{#each port_mapping}}
+  '{{@key}}': '{{this}}',
+{{/each}}
 }
 // Timeout durations.
-c.launch_timeout = 30000
-c.graceful_exit_timeout = 1000
+c.launch_timeout = {{launch_timeout}}
+c.graceful_exit_timeout = {{graceful_exit_timeout}}
 // Verify engine downloads from code.bot18.net against this "master" Salty pubkey.
 //   This should ALWAYS match the "Salty ID" displayed at the bottom of https://bot18.net/
 //   See: https://github.com/carlos8f/salty
-c.master_pubkey = '3t27msBTpN2Mn2LP68ZFLUUo3AN37aoGerUFPHdus9tFJg3hw7upmnY9c7nQ9fv1EFFF9nxiU9JzFSYPRAnx8Age'
+c.master_pubkey = '{{master_pubkey}}'

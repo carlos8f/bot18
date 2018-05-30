@@ -1,0 +1,47 @@
+{
+  "channel": "stable",
+  "motd": true,
+  "home": "~/.bot18",
+  "pairs": {
+    "bfx.*-usd": "watch",
+    "gdax.*-usd": "watch"
+  },
+  "strats": {
+    "*": "noop"
+  },
+  "gdax": {
+    "key": "YOUR-API-KEY",
+    "b64secret": "YOUR-BASE64-SECRET"
+  },
+  "bfx": {
+    "key": "YOUR-API-KEY",
+    "secret": "YOUR-SECRET",
+    "wallet": "exchange"
+  },
+  "mongo": {
+    "enabled": false,
+    "db": "bot18",
+    "host": "localhost",
+    "port": 27017,
+    "username": null,
+    "password": null,
+    "replica_set": null,
+    "auth_mechanism": null,
+    "server_uri": null
+  },
+  "locality": "en",
+  "notifiers": {
+    "pushover": {
+      "enabled": false,
+      "api_token": "YOUR-API-TOKEN",
+      "user_key": "YOUR-USER-KEY"
+    }
+  },
+  "port_mapping": {
+    "engine": "127.0.0.1:1818",
+    "gui": "127.0.0.1:8018"
+  },
+  "launch_timeout": 30000,
+  "graceful_exit_timeout": 1000,
+  "master_pubkey": "3t27msBTpN2Mn2LP68ZFLUUo3AN37aoGerUFPHdus9tFJg3hw7upmnY9c7nQ9fv1EFFF9nxiU9JzFSYPRAnx8Age"
+}

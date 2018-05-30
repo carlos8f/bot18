@@ -41,7 +41,7 @@ For full licensing details, see [bot18.net/licensing](https://bot18.net/licensin
 
 ## Configuration
 
-- Copy [this example](https://gist.githubusercontent.com/carlos8f/93210d8347d74cc2fa1ffa1a4558aba5/raw/bot18.config-sample.js) to "bot18.config.js" in the same folder where you run your `npx bot18` command, to configure the bot. Make sure you `chmod 600 bot18.config.js` to protect your configured API keys/passwords from exposure due to liberal filesystem permissions.
+- Copy [this example](https://gist.githubusercontent.com/carlos8f/93210d8347d74cc2fa1ffa1a4558aba5/raw/bot18.config-sample.js) to "bot18.config.js" in the same folder where you run your `npx bot18` command, to configure the bot. Make sure you `chmod 0600 bot18.config.js` to protect your configured API keys/passwords from exposure due to liberal filesystem permissions.
 - You can also specify a specific conf file with `npx bot18 --conf <path-to-bot18.config.js>`, and/or define an account-wide conf at `~/.bot18/bot18.config.js`.
 - Bonus points if you have [MongoDB](https://www.mongodb.com) installed! You can activate data streaming to Mongo by setting `c.mongo.enabled=true` in your conf file.
 

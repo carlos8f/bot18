@@ -31,154 +31,66 @@
                   https://bot18.net/
 */
 
-// Sanity check, reject old node versions.
-if (!global || !global.process || !global.process.versions || !global.process.versions.node) {
-  console.error('You are running something that doesn\'t seem to be Node.js. Bot18 only runs on Node. Get it at https://nodejs.org/')
-  process.exit(18)
-}
-var semver = require('semver')
-var colors = require('colors')
-if (semver.gt('8.3.0', process.versions.node)) {
-  console.error(('You are running a Node.js version older than 8.3.x. Please upgrade via https://nodejs.org/').red)
-  process.exit(1)
-}
-
-// Load engine dependencies.
-var path = require('path')
-  , fs = require('fs')
-  , _defaultsDeep = require('lodash.defaultsdeep')
-
-process.env.BOT18_LAUNCHER_VERSION = 'v' + require(path.resolve(__dirname, 'package.json')).version
-
-// Define the command.
-var cmd = require('commander')
-cmd._name = 'bot18'
-cmd
-  .version(process.env.BOT18_LAUNCHER_VERSION)
-  .arguments('[pair_specs...]')
-  .description('Launch the Bot18 multi-pair trading engine, with built-in webserver exposing a GUI on port 8018. This is the main entry point.')
-  .option('--channel <stable|unstable|free>', 'Select the Engine distribution channel (Default: stable)')
-  .option('--conf <path>', 'path to optional conf overrides file')
-  .option('--headless', 'Do not launch a built-in webserver/GUI.')
-  .option('--non_interactive', 'ignore key commands')
-  .option('--reset_profit', 'reset profit/loss calculation to zero')
-  .option('--debug', 'show detailed output')
-
-// Parse CLI input.
-cmd.parse(process.argv)
-
-// Assemble conf variables.
-var overrides, local, home, install, defs, conf = {}
-
-// Conf order of importance:
-
-// 1. arbitrary overrides with --conf <path>:
-if (cmd.conf) {
+;(function bot18_main () {
+  // Sanity check.
   try {
-    overrides = require(path.resolve(process.cwd(), cmd.conf))
+    if (!global || !global.process || !process || !process.versions || !process.versions.node || !require || !console) {
+      console.error('You are running something that doesn\'t seem to be Node.js. Bot18 only runs on Node. Get it at https://nodejs.org/')
+      process.exit(1)
+    }
   }
   catch (e) {
-    if (e.code !== 'MODULE_NOT_FOUND' && e.code !== 'ENOENT') throw e
-    overrides = {}
-  }
-}
-
-// 2. Local bot18.config.js if present:
-try {
-  local = require(path.resolve(process.cwd(), 'bot18.config'))
-}
-catch (e) {
-  if (e.code !== 'MODULE_NOT_FOUND' && e.code !== 'ENOENT') throw e
-  local = {}
-}
-
-// 3. Home dir bot18.config.js if present:
-try {
-  home = require(path.resolve(require('home-or-tmp'), '.bot18', 'bot18.config'))
-}
-catch (e) {
-  if (e.code !== 'MODULE_NOT_FOUND' && e.code !== 'ENOENT') throw e
-  home = {}
-}
-
-// 4. Install dir bot18.config.js if present:
-try {
-  install = require(path.resolve(__dirname, 'bot18.config'))
-}
-catch (e) {
-  if (e.code !== 'MODULE_NOT_FOUND' && e.code !== 'ENOENT') throw e
-  install = {}
-}
-
-// 5. Hard-coded defaults:
-defs = require(path.resolve(__dirname, 'bot18.config-sample'))
-
-// Merge them all in order.
-_defaultsDeep(conf, overrides, local, defs)
-
-// Use debug() for bot output.
-if (!process.env.DEBUG) {
-  process.env.DEBUG = conf.debug ? '*' : 'launcher,activation,startup,stdin,execute,errors'
-}
-// Load the debug module now that we have the conf.debug flag parsed.
-var debug = require('debug')('launcher')
-
-// Apply channel override.
-if (cmd.channel) {
-  conf.channel = cmd.channel
-}
-
-// Apply task/strat overrides.
-conf.tasks_override = cmd.tasks
-conf.strat_override = cmd.strats
-
-// Add each arg as a pair-spec.
-cmd.args.forEach(function (arg) {
-  var parts = arg.split(/\s*:\s*/)
-  if (parts.length < 2) {
-    debug(('Invalid arg: ' + arg).red)
+    console.error('You are running something that doesn\'t seem to be Node.js. Bot18 only runs on Node. Get it at https://nodejs.org/')
     process.exit(2)
   }
-  conf.pairs[parts[0]] = parts[1]
-})
-cmd.flags = ['headless', 'non_interactive', 'reset_profit', 'debug']
-
-// Add boolean flags to conf.
-cmd.flags.forEach(function (k) {
-  if (cmd[k] === true) {
-    conf[k] = true
+  try {
+    var path = require('path')
+    var pkg = require(path.resolve(__dirname, 'package.json'))
   }
-})
-
-// Append the commander.js instance to the conf for later convenience.
-conf.cmd = cmd
-
-// ZalgoNet MOTD.
-if (conf.motd) {
-  fs.readFile(path.resolve(__dirname, 'motd.txt'), {encoding: 'utf8'}, function (err, motd) {
+  catch (e) {
+    console.error('package.json for Bot18 could not be located. You are likely running a corrupt install and should try re-installing Bot18 and/or Node.js.')
+    process.exit(3)
+  }
+  // Reject old Node versions.
+  if (require('semver').gt('8.3.0', process.versions.node)) {
+    console.error('You are running a Node.js version older than 8.3.x. Please upgrade via https://nodejs.org/')
+    process.exit(4)
+  }
+  // Unleash the zalgo.
+  require('colors')
+  // Export global BOT18 var. This var holds literally everything.
+  // It's just an easy way of state-sharing between various parts of
+  // Bot18, and passing vars to the engine VM, which is pre-compiled and acts as a
+  // "main() within a main()", only having access to the global scope.
+  // Include a reference to require() so webpack doesn't try to shim it
+  // if we call it directly from the engine code.
+  // This will contain live JS instances so don't try to JSON stringify it!
+  var bot18 = global.BOT18 = {
+    pkg: pkg,
+    require: global.require,
+    conf: {},
+    lib: {}
+  }
+  bot18.user_agent = 'bot18/v' + bot18.pkg.version
+  // Perform all our warm-ups and run the engine.
+  function warmup (p) {
+    return require(path.resolve(__dirname, 'launcher', p))
+  }
+  require('async').series([
+    warmup('get-lib'),
+    warmup('parse-argv'),
+    warmup('get-conf'),
+    warmup('get-mongo'),
+    warmup('print-motd'),
+    warmup('get-wallet'),
+    warmup('get-auth'),
+    warmup('get-engine')
+  ], function (err) {
     if (err) {
-      debug(('Error reading MOTD: ' + err.message).red)
+      var msg = 'Runtime Error: ' + (err.stack || err)
+      console.error(require('chalk').red(msg))
+      process.exit(5)
     }
-    else {
-      console.error('\n' + motd.cyan + '\n')
-    }
-    runEngine()
+    bot18.engine()
   })
-}
-else {
-  runEngine()
-}
-
-// Get the latest engine code from ZalgoNet, verify its signature, and run it.
-function runEngine () {
-  require(path.resolve(__dirname, 'lib', 'get-engine'))(conf, function (err, engine) {
-    if (err) {
-      debug((err.message || ('Runtime Error: ' + (err.stack || err))).red)
-      if (err.retry) {
-        return setTimeout(runEngine, 2000)
-      }
-      return process.exit(3)
-    }
-    engine()
-  })
-}
+})()
