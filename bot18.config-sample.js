@@ -1,5 +1,5 @@
 /*
-  Bot18 Configuration (copied from v0.2.3)
+  Bot18 Configuration (copied from v0.3.3)
   https://bot18.net/
 
   The file bot18.config-sample.js represents the defaults.
@@ -14,35 +14,40 @@
          folder as bot18.config-sample.js, probably this will be
          /usr/local/lib/node_modules/bot18
 
+  Bot18 will attempt to load configuration from all 4 locations,
+  and merge the results in order of importance.
+
   Additionally, you can save your current setup to
   a new configuration file, by adding the `--save` argument:
 
-    `npx bot18 [--conf <my-custom-config.js>] --save ~/.bot18/config.js`
+    npx bot18 [--conf <my-custom-config.js>] --save ~/.bot18/config.js
 
   This will copy bot18.config-sample.js to ~/.bot18/config.js, and replace
   the defaults with your merged settings from all 4 possible config locations.
 */
 
-// export a hash-map of configuration variables.
+// Export a hash-map of configuration variables.
 var c = module.exports = {}
 
+
 /*
-  Section 1: Paths and startup options.
+  Section 1: Paths And Startup Options.
 */
 
 // Engine version to use. Defaults to latest stable build.
-//   Also available: "unstable" (latest dev build) and "trial" (crippled free version)
+//   Also available: "unstable" (latest dev build) and
+//   "trial" (crippled free version)
 c.channel = 'stable'
-// Display ZalgoNet MOTD at startup.
-c.motd = true
 // Directory for storing persistent settings, etc.
-//   Files written here will be chmod 0600, subdirectories 0700
+//   Files written here will be chmod 0600, subdirectories 0700.
 //   "~/" will be expanded to your home directory's absolute path,
-//   ..or a tmp directory, as a fallback.
+//   or a tmp directory, as a fallback.
 c.home = '~/.bot18'
+// Display ZalgoNet MOTD at startup. (Usually a news bulletin from @carlos8f)
+c.motd = true
 
 /*
-  Section 2: Multi-Pair selection.
+  Section 2: Multi-Pair And Task Selection.
 
     Bot18 runs a single master process which manages
     all your subproceses for each pair/exchange you want to run.
@@ -65,7 +70,7 @@ c.home = '~/.bot18'
     These pair selections can be overriden by CLI args. The above
     can be specified with the same effect by starting with:
 
-      bot18 '{bfx,gdax}.*-usd:watch' 'gdax.*:+record'
+      npx bot18 '{bfx,gdax}.*-usd:watch' 'gdax.*:+record'
 
     For each exchange/asset/currency combo selected, a worker
     subprocess will be spawned to perform actions in the task-list
@@ -74,7 +79,7 @@ c.home = '~/.bot18'
     Valid selector examples:
 
       bfx.btc-* (all Bitcoin-base pairs on Bitfinex)
-      *.*-jpy (All Japanese Yen-quoted pairs on all exchanges)
+      *.*-jpy (Japanese Yen-quoted pairs on all exchanges)
       *.* (or just "*", selects all supported pairs and exchanges)
 
     Valid tasks include:
@@ -84,28 +89,55 @@ c.home = '~/.bot18'
       watch:    Monitor public trade streams, candles, and stats.
       ob:       Keep a realtime orderbook mirror.
       record:   Record trades and orderbook snapshots to mongodb.
-      trade:    Requires api keys, keeps track of account balance
-                  and orders/fills, and enable trading.
-      auto:     Start in auto-trading mode. Perform trades recommended
-                  by the strategy, without human input. Toggle with "m" key.
+      trade:    Keep track of account balance/portfolio,
+                  personal orders/fills, and enable (manual or auto) trading.
+      auto:     Perform trades recommended by the strategy, without human input.
+                  Turn on with "A" (capitalized) during `trade` task.
+                  Turn off with "m" (any case) during `auto` task.
 
       (utility tasks)
 
-      list:     list available selectors/strategies and exit
-      balance:  output balances and exit
-      sim:      run simulations and exit
-      train:    train machine-learning models and exit
-      export:   export data and exit
+      list:     List available selectors/strategies and exit.
+      balance:  Output balances and exit.
+      sim:      Run simulations and exit.
+      train:    Train machine-learning models and exit.
+      export:   Export data and exit.
+
+    So to auto-trade LTC on Kraken using the macd strategy:
 
   Tips:
 
+  - Tasks can also have URL-encoded variables attached to them,
+      e.g.'*:trade?auto_short=true&buy_volume=1.5'
+  - Tasks can also be strategy names, to enable that strategy on the
+      selected pairs, e.g. '*:+macd?crossover=0.235'
   - Putting "+" before a task name adds it to the task-list, "-" removes it.
   - Wildcards "*" are valid in both keys and values.
-
 */
-c.pairs - {
+c.pairs = {
   'bfx.*-usd': 'watch',
   'gdax.*-usd': 'watch',
+}
+
+/**
+  You can also override ANY configuration variables using
+  exchange-pair-selectors, including wildcards as demonstrated above.
+
+  For example:
+
+    c.pair_config = {
+      'bfx.*-eur': {
+        'bfx.wallet': 'margin',
+        'bfx.key': 'my-EUR-api-key',
+        'bfx.secret': 'my-EUR-api-secret'
+      }
+    }
+
+  ..which will use the margin wallet and a special API key for
+  EUR pairs on Bitfinex.
+*/
+//Define your pair-specific overrides below:
+c.pair_config = {
 }
 
 /*
@@ -127,17 +159,15 @@ c.pairs - {
 
     NOTE:
 
-
     Bot18 will NOT perform trades automatically, unless you specify
     the task "auto" in the pairs task-list.
-
 */
 c.strats = {
   '*': 'noop',
 }
 
 /*
-  Section 3: Exchange configuration.
+  Section 3: Exchange Configuration.
 
   Bot18 will communicate directly with crypto exchanges
   using API keys that you add here. Bot18 will not be
@@ -151,7 +181,6 @@ c.strats = {
   know what you're doing. You DON'T WANT un-authorized
   people transferring funds out of your exchange account
   if your bot18.config.js gets intercepted!!!
-
 */
 
 // to enable GDAX trading, enter your API credentials:
@@ -169,7 +198,7 @@ c.bfx.wallet = 'exchange'
 
 
 /*
-  Section 4: MongoDB configuration.
+  Section 4: MongoDB Configuration.
 
   Bot18 can optionally stream data to MongoDB if you
   set c.mongo.enabled=true, and specify your mongod connection details.
@@ -211,14 +240,15 @@ c.locality = 'en'
 // Notifiers:
 c.notifiers = {}
 
-// pushover config
+// Pushover.net
 c.notifiers.pushover = {}
 c.notifiers.pushover.enabled = false
 c.notifiers.pushover.api_token = 'YOUR-API-TOKEN'
 c.notifiers.pushover.user_key = 'YOUR-USER-KEY'
 
+
 /*
-  Section 7: Internal configurations.
+  Section 7: Internal Configuration.
 
   These variables don't usually need changing,
   but they are here in case you want to have a custom setup.
@@ -235,3 +265,35 @@ c.graceful_exit_timeout = 1000
 //   This should ALWAYS match the "Salty ID" displayed at the bottom of https://bot18.net/
 //   See: https://github.com/carlos8f/salty
 c.master_pubkey = '3t27msBTpN2Mn2LP68ZFLUUo3AN37aoGerUFPHdus9tFJg3hw7upmnY9c7nQ9fv1EFFF9nxiU9JzFSYPRAnx8Age'
+
+
+// Overrides or additional variables can be defined on `c` below this point.
+// -------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
