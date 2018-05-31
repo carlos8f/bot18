@@ -108,6 +108,10 @@ module.exports = function getAuth (cb) {
           debug('Error parsing cached auth at ~/.bot18/auth.json'.red)
           return getNewAuth()
         }
+        if (bot18.cmd.offline) {
+          // Skip validation, avoid connection to ZalgoNet.
+          return cb()
+        }
         debug('Validating cached auth with ZalgoNet - Please stand by...'.grey)
         bot18.lib.mr_get('https://code.bot18.net/auth/' + bot18.auth.user_info.username, function (err, resp, body) {
           if (err) {

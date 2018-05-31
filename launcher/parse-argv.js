@@ -48,16 +48,5 @@ module.exports = function (cb) {
   if (cmd.channel) {
     bot18.conf.channel = cmd.channel
   }
-  // Apply --dev_engine override
-  if (cmd.dev_engine) {
-    bot18.conf.dev_engine = cmd.dev_engine
-  }
-  // Add boolean flags to conf first (overrides all conf definitions):
-  cmd.flags = ['headless', 'non_interactive', 'reset_profit', 'debug']
-  cmd.flags.forEach(function (k) {
-    if (cmd[k] === true) {
-      bot18.conf[k] = true
-    }
-  })
   cb()
 }

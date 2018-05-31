@@ -31,18 +31,19 @@ module.exports = function getEngine (cb) {
   var bytes = require('bytes')
   var _get = require('lodash.get')
   var conf = bot18.conf
-  if (conf.dev_engine) {
+  if (bot18.cmd.dev_engine) {
     // Support linking to a local engine copy for development.
     conf.channel = 'dev'
-    try {
-      var engine = require(r(process.cwd(), conf.dev_engine, 'main'))
+    bot18.engine = function dev_main () {
+      try {
+        require(r(process.cwd(), bot18.cmd.dev_engine, 'main'))
+      }
+      catch (e) {
+        debug('dev_main err', e)
+        return cb(new Error('initializing dev engine. (Error code: THEJOKER)'))
+      }
     }
-    catch (e) {
-      debug('dev_main err', e)
-      return cb(new Error('initializing dev engine. (Error code: THEJOKER)'))
-    }
-    bot18.engine = engine
-    return cb(null, engine)
+    return cb()
   }
   conf.channel = (conf.channel || 'stable').toLowerCase()
   // Check the local engine cache.
@@ -53,6 +54,9 @@ module.exports = function getEngine (cb) {
       if (err && err.code === 'ENOENT') {
         // Cache miss.
         bot18.engine_cache = 'miss'
+        if (bot18.cmd.offline) {
+          return cb(new Error('No cached engine found. Unable to run offline.'))
+        }
         fetchEngine()
       }
       else if (err) {
