@@ -36,7 +36,7 @@ module.exports = function getEngine (cb) {
     conf.channel = 'dev'
     bot18.engine = function dev_main () {
       try {
-        require(r(process.cwd(), bot18.cmd.dev_engine, 'main'))
+        require(r(process.cwd(), bot18.cmd.dev_engine))
       }
       catch (e) {
         debug('dev_main err', e)

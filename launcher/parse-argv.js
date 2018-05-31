@@ -27,7 +27,7 @@ module.exports = function (cb) {
     .option('--reset_profit', 'Reset profit/loss calculation to zero.')
     .option('--offline', 'Do not check for engine updates, just run the cached engine.')
     .option('--no_telemetry', 'Disable telemetry to ZalgoNet. CLOUD/SWARM features will be unavailable.')
-    .option('--dev_engine <path>', 'Run a dev copy of the engine')
+    .option('--dev_engine <path>', 'Run a dev copy of the engine.')
     .option('--debug', 'Enable detailed output to stderr.')
 
   // Parse CLI args.
