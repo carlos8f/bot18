@@ -11,7 +11,7 @@ module.exports = function (save_p, cb) {
     }
     require('lodash.defaultsdeep')(bot18.conf, defaults)
     var out = require('handlebars').compile(tpl)(defaults)
-    var target_p = save_p === 'home' ? bot18.conf.home : r(process.cwd(), save_p)
+    var target_p = save_p === 'home' ? r(bot18.conf.home, 'config.js') : r(process.cwd(), save_p)
     bot18.debug('launcher')(('Writing ' + target_p).grey)
     fs.writeFile(target_p, out, {encoding: 'utf8'}, function (err) {
       if (err) {

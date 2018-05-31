@@ -29,7 +29,7 @@ module.exports = function getWallet (cb) {
       fs.mkdir(conf.home, parseInt('0700', 8), function (err) {
         if (err) return cb(err)
         debug('Creating ~/.bot18/config.js (chmod 0600)'.grey)
-        require(r(__dirname, 'save-conf'))(r(conf.home, 'config.js'), function (err) {
+        require(r(__dirname, 'save-conf'))('home', function (err) {
           if (err) return cb(err)
           debug('Creating ~/.bot18/builds (chmod 0700)'.grey)
           fs.mkdir(r(conf.home, 'builds'), parseInt('0700', 8), function (err) {

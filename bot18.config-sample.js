@@ -31,7 +31,7 @@ var c = module.exports = {}
 */
 
 // Engine version to use. Defaults to latest stable build.
-//   Also available: "unstable" (latest dev build) and "free" (crippled free version)
+//   Also available: "unstable" (latest dev build) and "trial" (crippled free version)
 c.channel = 'stable'
 // Display ZalgoNet MOTD at startup.
 c.motd = true

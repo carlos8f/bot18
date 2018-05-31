@@ -8,11 +8,12 @@ var bot18 = global.BOT18
 
 module.exports = function (cb) {
   if (bot18.conf.motd) {
+    var linkify = require('linkify-terminal')
     require('fs').readFile(require('path').resolve(__dirname, '..', 'motd.txt'), {encoding: 'utf8'}, function (err, motd) {
       if (err) {
         return cb(err)
       }
-      console.error('\n' + motd.cyan + '\n')
+      console.error('\n' + linkify(motd, {pretty: true}).cyan + '\n')
       cb()
     })
   }
