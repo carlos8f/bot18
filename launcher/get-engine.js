@@ -73,18 +73,13 @@ module.exports = function getEngine (cb) {
 
   function fetchEngine () {
     debug('Compiling bot18_engine.vm ('.grey + conf.channel.grey + ', '.grey + _get(bot18, 'auth.channels.' + conf.channel + '.current_version', '').grey + ') - Please stand by...'.grey)
-    // @todo: use bot18.lib.mr_get()
     var opts = {
-      headers: {
-        'x-bot18-auth': bot18.auth.auth_token,
-        'user-agent': bot18.user_agent
-      },
       query: {
         channel: conf.channel
       },
       stream: true
     }
-    mr('https://code.bot18.net/dl/' + bot18.auth.user_info.username, opts, function (err, resp, body) {
+    bot18.lib.mr_get('https://code.bot18.net/dl/' + bot18.auth.user_info.username, opts, function (err, resp, body) {
       if (err) {
         return cb(new Error('Your network connection is down. Please try again later.'))
       }

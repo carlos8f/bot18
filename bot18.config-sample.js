@@ -1,6 +1,25 @@
 /*
-  Bot18 Configuration (copied from v0.3.3)
+  Bot18 Configuration (copied from bot18/v0.3.3)
   https://bot18.net/
+
+  -------
+
+  WARNING REGARDING EXCHANGE API KEYS
+
+  Bot18 will communicate directly with crypto exchanges
+  using API keys that you add here. Bot18 will not be
+  able to perform trades on your behalf unless you give
+  the "trade" permission (or equivalent) to your API key.
+  Bot18 should also be able to "view" the account balance
+  and historical orders and fills.
+
+  DO NOT give the "transfer" or "withdraw" permission to
+  your API keys for use with Bot18, unless you really,
+  really, really know what you're doing. You DON'T WANT
+  un-authorized people transferring funds out of your
+  exchange account if your config.js gets intercepted!!!
+
+  -------
 
   The file bot18.config-sample.js represents the defaults.
   Extend/override these variables by (in order of importance):
@@ -37,20 +56,21 @@ var c = module.exports = {}
 // Engine version to use. Defaults to latest stable build.
 //   Also available: "unstable" (latest dev build) and
 //   "trial" (crippled free version)
-c.channel = 'stable'
+c.channel = "stable"
 // Directory for storing persistent settings, etc.
 //   Files written here will be chmod 0600, subdirectories 0700.
 //   "~/" will be expanded to your home directory's absolute path,
 //   or a tmp directory, as a fallback.
-c.home = '~/.bot18'
+c.home = "~/.bot18"
 // Display ZalgoNet MOTD at startup. (Usually a news bulletin from @carlos8f)
 c.motd = true
 
 /*
-  Section 2: Multi-Pair And Task Selection.
+  Section 2: Pair->Task Mapping and Task Configuration.
 
     Bot18 runs a single master process which manages
-    all your subproceses for each pair/exchange you want to run.
+    all your subproceses for each asset/currency pair and exchange
+    you want to run.
 
     Pairs are selected using a hash-map defined in c.pairs:
 
@@ -67,8 +87,9 @@ c.motd = true
         "gdax.*": "+record"
       }
 
-    These pair selections can be overriden by CLI args. The above
-    can be specified with the same effect by starting with:
+    These pair selections can be overriden by CLI args (called "pair-specs",
+    keys separated from values with a ":"). The above can be specified with
+    the same effect by starting with:
 
       npx bot18 '{bfx,gdax}.*-usd:watch' 'gdax.*:+record'
 
@@ -103,8 +124,6 @@ c.motd = true
       train:    Train machine-learning models and exit.
       export:   Export data and exit.
 
-    So to auto-trade LTC on Kraken using the macd strategy:
-
   Tips:
 
   - Tasks can also have URL-encoded variables attached to them,
@@ -113,15 +132,26 @@ c.motd = true
       selected pairs, e.g. '*:+macd?crossover=0.235'
   - Putting "+" before a task name adds it to the task-list, "-" removes it.
   - Wildcards "*" are valid in both keys and values.
+
+  Examples:
+
+
+  Auto-trade LTC/USD and ETH/USD on Kraken using the macd strategy:
+
+    npx bot18 kraken.{ltc,eth}-usd:+trade,auto,macd?crossover=0.235
+
 */
 c.pairs = {
-  'bfx.*-usd': 'watch',
-  'gdax.*-usd': 'watch',
+  "bfx.*-usd": "watch",
+  "gdax.*-usd": "watch"
 }
 
 /**
-  You can also override ANY configuration variables using
-  exchange-pair-selectors, including wildcards as demonstrated above.
+  You can pass configuration variables targeted at specific
+  exchange-pair-selectors. This is how you configure your
+  exchange API keys. You can configure multiple API keys
+  for a given exchange, if you specify a specific asset/currency
+  in the exchange-pair-selector.
 
   For example:
 
@@ -133,15 +163,27 @@ c.pairs = {
       }
     }
 
-  ..which will use the margin wallet and a special API key for
+  ..which will use the margin wallet and a specific API key for
   EUR pairs on Bitfinex.
 */
-//Define your pair-specific overrides below:
+// Define your exchange-pair configurations below, including
+// all exchange API keys Bot18 needs below (replace YOUR-API-KEY
+// with your actual API key)
+// Note: bfx.wallet can be "margin" for selecting margin account.
 c.pair_config = {
+  "bfx.*": {
+    "bfx.key": "YOUR-API-KEY",
+    "bfx.secret": "YOUR-SECRET",
+    "bfx.wallet": "exchange"
+  },
+  "gdax.*": {
+    "gdax.key": "YOUR-API-KEY",
+    "gdax.b64secret": "YOUR-BASE64-SECRET"
+  }
 }
 
 /*
-  Section 3: Strategy selection.
+  Section 3: Strategy Selection And Configuration.
 
     Bot18 runs can run multiple strategies at once, mapped
     arbitrarily to the selected pairs.
@@ -163,38 +205,29 @@ c.pair_config = {
     the task "auto" in the pairs task-list.
 */
 c.strats = {
-  '*': 'noop',
+  "*": "noop"
 }
 
-/*
-  Section 3: Exchange Configuration.
+/**
+  You can also pass configurations to each strategy.
 
-  Bot18 will communicate directly with crypto exchanges
-  using API keys that you add here. Bot18 will not be
-  able to perform trades on your behalf unles you give
-  the "trade" permission (or equivalent) to your API key.
-  Bot18 should also be able to "view" the account balance
-  and historical orders and fills.
+  For example:
 
-  DO NOT give the "transfer" permission to your API keys
-  for use with Bot18, unless you really, really, really
-  know what you're doing. You DON'T WANT un-authorized
-  people transferring funds out of your exchange account
-  if your bot18.config.js gets intercepted!!!
+    c.strat_config = {
+      'macd': {
+        'crossover': 1.352,
+        'rsi_overbought': 85
+      }
+    }
+
+  ..which will customize the `macd` strategy's configuration.
 */
-
-// to enable GDAX trading, enter your API credentials:
-c.gdax = {}
-c.gdax.key = 'YOUR-API-KEY'
-c.gdax.b64secret = 'YOUR-BASE64-SECRET'
-c.gdax.passphrase = ''
-
-// to enable Bitfinex trading, enter your API credentials:
-c.bfx = {}
-c.bfx.key = 'YOUR-API-KEY'
-c.bfx.secret = 'YOUR-SECRET'
-// May use 'exchange' or 'margin' wallet balances
-c.bfx.wallet = 'exchange'
+//Define your strat-specific config below:
+c.strat_config = {
+  "noop": {
+    "test_var": 1.8181818
+  }
+}
 
 
 /*
@@ -206,14 +239,14 @@ c.bfx.wallet = 'exchange'
 */
 c.mongo = {}
 c.mongo.enabled = false
-c.mongo.db = 'bot18'
-c.mongo.host = process.env.MONGODB_PORT_27017_TCP_ADDR || 'localhost'
+c.mongo.db = "bot18"
+c.mongo.host = process.env.MONGODB_PORT_27017_TCP_ADDR || "localhost"
 c.mongo.port = 27017
 c.mongo.username = null
 c.mongo.password = null
 // Or to use a specific connection string,
-// uncomment the following line:
-//c.mongo.server_uri = 'mongodb://user@password:host/db?params'
+// customize and uncomment the following line:
+//c.mongo.server_uri = "mongodb://user@password:host/db?params"
 c.mongo.replica_set = null
 c.mongo.auth_mechanism = null
 
@@ -227,7 +260,7 @@ c.mongo.auth_mechanism = null
 
   Currently, there are no translations other than English.
 */
-c.locality = 'en'
+c.locality = "en"
 
 
 /*
@@ -237,14 +270,13 @@ c.locality = 'en'
   if you enter your API keys here.
 
 */
-// Notifiers:
-c.notifiers = {}
 
 // Pushover.net
-c.notifiers.pushover = {}
-c.notifiers.pushover.enabled = false
-c.notifiers.pushover.api_token = 'YOUR-API-TOKEN'
-c.notifiers.pushover.user_key = 'YOUR-USER-KEY'
+c.pushover = {
+  "enabled": false,
+  "api_token": "YOUR-API-TOKEN",
+  "user_key": "YOUR-USER-KEY"
+}
 
 
 /*
@@ -255,16 +287,17 @@ c.notifiers.pushover.user_key = 'YOUR-USER-KEY'
 */
 // Internal port mapping.
 c.port_mapping = {
-  'engine': '127.0.0.1:1818',
-  'gui': '127.0.0.1:8018',
+  "engine": "127.0.0.1:1818",
+  "gui": "127.0.0.1:8018"
 }
+
 // Timeout durations.
 c.launch_timeout = 30000
 c.graceful_exit_timeout = 1000
 // Verify engine downloads from code.bot18.net against this "master" Salty pubkey.
 //   This should ALWAYS match the "Salty ID" displayed at the bottom of https://bot18.net/
 //   See: https://github.com/carlos8f/salty
-c.master_pubkey = '3t27msBTpN2Mn2LP68ZFLUUo3AN37aoGerUFPHdus9tFJg3hw7upmnY9c7nQ9fv1EFFF9nxiU9JzFSYPRAnx8Age'
+c.master_pubkey = "3t27msBTpN2Mn2LP68ZFLUUo3AN37aoGerUFPHdus9tFJg3hw7upmnY9c7nQ9fv1EFFF9nxiU9JzFSYPRAnx8Age"
 
 
 // Overrides or additional variables can be defined on `c` below this point.

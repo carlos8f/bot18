@@ -19,7 +19,6 @@ module.exports = function getAuth (cb) {
   var fs = require('fs')
   var debug = require('debug')('launcher')
   var prompt = require('cli-prompt')
-  var mr = require('micro-request')
   var pempal = require('pempal')
   var salty = require('salty')
   var async = require('async')
@@ -109,14 +108,8 @@ module.exports = function getAuth (cb) {
           debug('Error parsing cached auth at ~/.bot18/auth.json'.red)
           return getNewAuth()
         }
-        var opts = {
-          headers: {
-            'x-bot18-auth': bot18.auth.auth_token,
-            'user-agent': 'bot18/' + process.env.BOT18_LAUNCHER_VERSION
-          }
-        }
         debug('Validating cached auth with ZalgoNet - Please stand by...'.grey)
-        mr('https://code.bot18.net/auth/' + bot18.auth.user_info.username, opts, function (err, resp, body) {
+        bot18.lib.mr_get('https://code.bot18.net/auth/' + bot18.auth.user_info.username, function (err, resp, body) {
           if (err) {
             return cb(new Error('Your network connection is down. Please try again later.'))
           }
@@ -178,16 +171,8 @@ module.exports = function getAuth (cb) {
           return withCreds('guest', 'uNl3AsH tHe ZaLG0')
         }
         // Check if username exists.
-        var opts = {
-          headers: {
-            'user-agent': 'bot18/' + process.env.BOT18_LAUNCHER_VERSION
-          },
-          query: {
-            check_username: true
-          }
-        }
         debug('Searching '.grey + 'ZalgoNet'.cyan + ' - Please stand by...'.grey)
-        mr('https://code.bot18.net/auth/' + username, opts, function (err, resp, body) {
+        bot18.lib.mr_get('https://code.bot18.net/auth/' + username, {query: {check_username: true}}, function (err, resp, body) {
           if (err) {
             return cb(new Error('Your network connection is down. Please try again later.'))
           }

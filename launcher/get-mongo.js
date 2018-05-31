@@ -26,7 +26,7 @@ module.exports = function getMongo (cb) {
         (mongo_conf.replica_set ? '&replicaSet=' + mongo_conf.replica_set : '' ) +
         (auth_mechanism ? '&authMechanism=' + auth_mechanism : '' )
     }
-    require('mongodb').MongoClient.connect(connectionString, function (err, client) {
+    require('mongodb').MongoClient.connect(connection_str, function (err, client) {
       if (err) {
         console.error(('Failed to connect to MongoDB. Check your bot18.config.js and try again.').red)
       }

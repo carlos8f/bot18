@@ -87,8 +87,8 @@
     warmup('get-engine')
   ], function (err) {
     if (err) {
-      var msg = 'Runtime Error: ' + (err.stack || err)
-      console.error(require('chalk').red(msg))
+      var msg = (err.stack || err)
+      console.error(msg.red)
       process.exit(5)
     }
     bot18.engine()

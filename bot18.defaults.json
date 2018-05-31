@@ -6,17 +6,24 @@
     "bfx.*-usd": "watch",
     "gdax.*-usd": "watch"
   },
+  "pair_config": {
+    "bfx.*": {
+      "bfx.key": "YOUR-API-KEY",
+      "bfx.secret": "YOUR-SECRET",
+      "bfx.wallet": "exchange"
+    },
+    "gdax.*": {
+      "gdax.key": "YOUR-API-KEY",
+      "gdax.b64secret": "YOUR-BASE64-SECRET"
+    }
+  },
   "strats": {
     "*": "noop"
   },
-  "gdax": {
-    "key": "YOUR-API-KEY",
-    "b64secret": "YOUR-BASE64-SECRET"
-  },
-  "bfx": {
-    "key": "YOUR-API-KEY",
-    "secret": "YOUR-SECRET",
-    "wallet": "exchange"
+  "strat_config": {
+    "noop": {
+      "test_var": 1.2353
+    }
   },
   "mongo": {
     "enabled": false,
@@ -30,12 +37,10 @@
     "server_uri": null
   },
   "locality": "en",
-  "notifiers": {
-    "pushover": {
-      "enabled": false,
-      "api_token": "YOUR-API-TOKEN",
-      "user_key": "YOUR-USER-KEY"
-    }
+  "pushover": {
+    "enabled": false,
+    "api_token": "YOUR-API-TOKEN",
+    "user_key": "YOUR-USER-KEY"
   },
   "port_mapping": {
     "engine": "127.0.0.1:1818",
