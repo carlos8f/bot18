@@ -67,8 +67,9 @@ c.motd = true
         "gdax.*": "+record"
       }
 
-    These pair selections can be overriden by CLI args. The above
-    can be specified with the same effect by starting with:
+    These pair selections can be overriden by CLI args (called "pair-specs",
+    keys separated from values with a ":"). The above can be specified with
+    the same effect by starting with:
 
       npx bot18 '{bfx,gdax}.*-usd:watch' 'gdax.*:+record'
 

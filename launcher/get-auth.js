@@ -196,12 +196,12 @@ module.exports = function getAuth (cb) {
               if (body && body.exists === true) {
                 // Username is ok.
                 debug('Username '.grey + body.username.yellow + ' found.'.green)
-                return setTimeout(promptForPassword, 500)
+                return setTimeout(promptForPassword, 0)
                 break
               }
               else {
                 debug('Username '.grey + username.yellow + ' not found!'.red)
-                return setTimeout(promptForUsername, 1000)
+                return setTimeout(promptForUsername, 0)
               }
             case 429:
               return cb(new Error('Your IP (' + body.request_ip + ') is making too many requests/sec to ZalgoNet. (Limit is ' + body.max_reqs_per_sec + ' reqs/sec, your reqs/sec: ' + (body.reqs_blocked + 1) + ')'))
