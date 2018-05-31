@@ -47,7 +47,7 @@ module.exports = function getEngine (cb) {
   }
   conf.channel = (conf.channel || 'stable').toLowerCase()
   // Check the local engine cache.
-  bot18.etag = _get(conf, 'auth.channels.' + conf.channel + '.etag', null)
+  bot18.etag = _get(bot18, 'auth.channels.' + conf.channel + '.etag', null)
   if (bot18.etag) {
     var p = r(conf.home, 'builds', bot18.etag + '.bot18')
     fs.stat(p, function (err, stat) {
@@ -105,7 +105,7 @@ module.exports = function getEngine (cb) {
           err.retry = true
           return cb(err)
         case 404:
-          return cb(new Error('Invalid engine distribution channel. Please choose either "stable", "unstable", or "free".'))
+          return cb(new Error('Invalid engine distribution channel. Please choose either "stable", "unstable", or "trial".'))
         case 429:
           return cb(new Error('Your IP (' + body.request_ip + ') is making too many requests/sec to ZalgoNet. (Limit is ' + body.max_reqs_per_sec + ' reqs/sec, your reqs/sec: ' + (body.reqs_blocked + 1) + ')'))
         case 500:
@@ -158,7 +158,7 @@ module.exports = function getEngine (cb) {
         }
         function engine () {
           console.error()
-          debug('Handing control over to bot18_engine.vm. HOLD ONTO YOUR BUTTS!'.cyan)
+          debug('Handing control over to bot18_engine.vm -- HOLD ONTO YOUR BUTTS!'.cyan)
           console.error()
           console.error('                                       ' + ' ---- '.yellow.inverse)
           console.error()

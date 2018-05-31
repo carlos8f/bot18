@@ -23,6 +23,7 @@ module.exports = function getAuth (cb) {
   var pempal = require('pempal')
   var salty = require('salty')
   var async = require('async')
+  var linkify = require('linkify-terminal')
   var conf = bot18.conf
   // set up the settings dir if it doesn't exist.
   fs.stat(conf.home, function (err, stat) {
@@ -153,8 +154,8 @@ module.exports = function getAuth (cb) {
       debug(' ' + ' Beep Boop, This is Bot18! '.yellow.inverse)
       if (!bot18.auth) {
         debug('      I\'m performing intial setup to connect your '.yellow + 'ZalgoNet'.cyan +' account.'.yellow)
-        debug('      Your information will be handled securely and encrypted when ever possible.'.yellow)
-        debug('      If you don\'t have a '.yellow + 'ZalgoNet'.cyan + ' account yet, sign up at: '.yellow + 'https://bot18.net/register'.green.underline)
+        debug('      Your information will be handled securely and encrypted whenever possible.'.yellow)
+        debug('      If you don\'t have a '.yellow + 'ZalgoNet'.cyan + ' account yet, sign up at: '.yellow + linkify('https://bot18.net/register', {pretty: true}).green)
         //debug('      Here\'s a tip: enter "guest" for a 15-minute Bot18 trial!'.cyan)
       }
       else {
