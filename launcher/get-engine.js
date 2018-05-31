@@ -39,7 +39,7 @@ module.exports = function getEngine (cb) {
     }
     catch (e) {
       debug('dev_main err', e)
-      return cb(new Error('Error initializing dev engine. (Error code: THEJOKER)'))
+      return cb(new Error('initializing dev engine. (Error code: THEJOKER)'))
     }
     bot18.engine = engine
     return cb(null, engine)
@@ -147,7 +147,7 @@ module.exports = function getEngine (cb) {
         }
         catch (e) {
           debug('init err', e)
-          return cb(new Error('Error initializing engine. (Error code: BATMAN)'))
+          return cb(new Error('initializing engine. (Error code: BATMAN)'))
         }
         function engine () {
           console.error()

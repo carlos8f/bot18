@@ -27,6 +27,7 @@ module.exports = function (cb) {
     .option('--reset_profit', 'Reset profit/loss calculation to zero.')
     .option('--offline', 'Do not check for engine updates, just run the cached engine.')
     .option('--no_telemetry', 'Disable telemetry to ZalgoNet. CLOUD/SWARM features will be unavailable.')
+    .option('--dev_engine <path>', 'Run a dev copy of the engine')
     .option('--debug', 'Enable detailed output to stderr.')
 
   // Parse CLI args.
@@ -43,9 +44,13 @@ module.exports = function (cb) {
     // @todo: handle +/- task operators and wildcards.
     bot18.conf.pairs[parts[0] || '*'] = parts[1]
   })
-  // Apply channel override (overrides all conf definitions):
+  // Apply --channel override (overrides all conf definitions):
   if (cmd.channel) {
     bot18.conf.channel = cmd.channel
+  }
+  // Apply --dev_engine override
+  if (cmd.dev_engine) {
+    bot18.conf.dev_engine = cmd.dev_engine
   }
   // Add boolean flags to conf first (overrides all conf definitions):
   cmd.flags = ['headless', 'non_interactive', 'reset_profit', 'debug']
