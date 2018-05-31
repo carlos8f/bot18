@@ -6,24 +6,27 @@
                                  .|....'                                 
                                                                          
 
-                               MOTD: May 29th 2018
-                        Welcome to the Bot18 Public Beta!
+                               MOTD: May 31st 2018
+                          Working on the trading engine!
 
-    Beta Features (So far)
+    Hey guys,
 
-    The current version is an early proof-of-concept, and supports:
+    I'm doing some major refactoring on the engine, making it "multi-threaded"
+    by having a single supervisor process, which manages the strategy, and
+    controls an army of sub-processes for each task/exchange/asset combo you
+    want to trade. Things are going well but the scope is expanding quickly.
 
-      - Monitoring live trade and orderbook streams from Bitfinex
-          and Coinbase Pro simultaneously.
-      - Coinbase Pro (formerly known as GDAX) live trading.
-      - Tracks your account balance and reports profit/loss when you trade.
-      - Press the "l" key to list available key commands.
-      - Supports executing manual trades when yellow "M" is displayed
-          at the end of the console columns.
-      - Enter "A" (capitalized) to enable auto-trading.
-      - The early auto-trading strategy is based on orderbook snapshot
-          power-imbalance, and is highly experimental. Currently, the
-          Beta's auto-trading strategy is not recommended for serious trading.
+    I hope to have a testable Bot18 client/engine by next week, and if I do,
+    I'll officially start the Beta, send an announcement email out, and anyone
+    with an Unlock Code will be able to run the most up-to-date build.
+
+    The client/engine will not be very close to finished when the Beta starts,
+    so expect some unstability and it may go through several re-codes before
+    the Beta is over.
+
+    Also, I plan on doing a full re-design of bot18.net, making it more "trustable"
+    as a brand, and I'm purchasing Zalgo.net, for expanding later as a cloud
+    service and social network.
 
     For more info on this release, see: https://www.npmjs.com/package/bot18
     Follow the latest news via Twitter: https://twitter.com/bot18_net

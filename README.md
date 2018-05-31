@@ -35,19 +35,23 @@ All communications and local storage are safely encrypted using the latest:
 
 To get the most out of Bot18, you'll need an 8-digit Unlock Code, purchasable for $49.99 (for a limited time!) at [bot18.net/beta](https://bot18.net/beta). You can pay by credit card or crypto-currency, and the code never expires and grants you automatic code updates for the entire Bot18 product lifecycle.
 
-Or, you can try out Bot18 for free (enter "guest" as the ZalgoNet username or set `c.channel='trial'` in your conf file), but you experience will be very sub-optimal. The "trial" engine distribution (also known as "cripple mode") is heavily DE-optimized (roughly 10x slower), does not support auto-trading strategies, and auto-quits after 15 minutes. If you like what you see, invest in an Unlock Code!
+Or, you can try out Bot18 for free (enter "guest" as the ZalgoNet username or run with `--channel trial`), but you experience will be very sub-optimal. The "trial" engine distribution (also known as "cripple mode") is heavily DE-optimized (roughly 10x slower), does not support auto-trading strategies, and auto-quits after 15 minutes. If you like what you see, invest in an Unlock Code!
 
 For full licensing details, see [bot18.net/licensing](https://bot18.net/licensing).
 
 ## Configuration
 
-- Copy [this example](https://gist.githubusercontent.com/carlos8f/93210d8347d74cc2fa1ffa1a4558aba5/raw/bot18.config-sample.js) to "bot18.config.js" in the same folder where you run your `npx bot18` command, to configure the bot. Make sure you `chmod 0600 bot18.config.js` to protect your configured API keys/passwords from exposure due to liberal filesystem permissions.
-- You can also specify a specific conf file with `npx bot18 --conf <path-to-bot18.config.js>`, and/or define an account-wide conf at `~/.bot18/bot18.config.js`.
+- Copy [this example](https://github.com/carlos8f/bot18/blob/with-gui/bot18.config-sample.js) to "bot18.config.js" in the same folder where you run your `npx bot18` command, to configure the bot. Make sure you `chmod 0600 bot18.config.js` to protect your configured API keys/passwords from exposure due to liberal filesystem permissions.
+- You can also specify a specific conf file with `npx bot18 --conf <path-to-bot18.config.js>`, and/or define an account-wide conf at `~/.bot18/config.js`.
 - Bonus points if you have [MongoDB](https://www.mongodb.com) installed! You can activate data streaming to Mongo by setting `c.mongo.enabled=true` in your conf file.
 
 ## Beta Features (So far)
 
-The current version is an early proof-of-concept, and supports:
+The Beta engine build currently doesn't do anything but print something to stdio:
+
+![screenshot](https://user-images.githubusercontent.com/106763/40774021-652490d2-6479-11e8-9cb5-160804c099a5.png)
+
+The current ALPHA version (now being ported to the Beta platform) is an early proof-of-concept, and supports:
 
   - Monitoring live trade streams from [Bitfinex](https://www.bitfinex.com/) and [Coinbase Pro](https://pro.coinbase.com/) simultaneously.
   - Supports [Coinbase Pro](https://pro.coinbase.com/) (formerly known as GDAX) live trading. Tracks your account balance and reports profit/loss when you trade.
@@ -63,6 +67,6 @@ The current version is an early proof-of-concept, and supports:
 
 Cheers and happy trading,
 
-[@carlos8f](https://github.com/carlos8f), May 28th 2018
+[@carlos8f](https://github.com/carlos8f), May 31st 2018
 
 [Salty](https://github.com/carlos8f/salty) ID: `3t27msBTpN2Mn2LP68ZFLUUo3AN37aoGerUFPHdus9tFJg3hw7upmnY9c7nQ9fv1EFFF9nxiU9JzFSYPRAnx8Age`
