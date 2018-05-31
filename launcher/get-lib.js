@@ -8,6 +8,6 @@ var bot18 = global.BOT18
 
 module.exports = function (cb) {
   var r = require('path').resolve
-  require(r(__dirname, '..', 'lib', 'mr'))
+  require(r(__dirname, '..', 'lib', 'mr'))()
   cb()
 }

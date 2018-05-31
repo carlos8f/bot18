@@ -221,7 +221,7 @@ module.exports = function getAuth (cb) {
       }
     }
     debug('Authenticating - Please stand by...'.grey)
-    mr.post('https://code.bot18.net/auth/' + username, opts, function (err, resp, body) {
+    bot18.lib.mr_post('https://code.bot18.net/auth/' + username, opts, function (err, resp, body) {
       if (err) {
         return cb(new Error('Your network connection is down. Please try again later.'))
       }

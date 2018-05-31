@@ -21,7 +21,6 @@ var bot18 = global.BOT18
 
 module.exports = function getEngine (cb) {
   var salty = require('salty')
-  var mr = require('micro-request')
   var vm = require('vm')
   var zlib = require('zlib')
   var debug = bot18.debug('launcher')
@@ -97,8 +96,7 @@ module.exports = function getEngine (cb) {
           return cb(new Error('Invalid request to ZalgoNet. The REST API may have changed.'))
         case 403:
           var err = new Error('Authorization expired. Please log in again.')
-          err.retry = true
-          return cb(err)
+          return require(r(__dirname, 'get-auth'))(cb)
         case 404:
           return cb(new Error('Invalid engine distribution channel. Please choose either "stable", "unstable", or "trial".'))
         case 429:
