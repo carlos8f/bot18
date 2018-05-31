@@ -20,7 +20,6 @@ module.exports = function getWallet (cb) {
   var debug = require('debug')('launcher')
   var pempal = require('pempal')
   var salty = require('salty')
-  var async = require('async')
   var conf = bot18.conf
   // set up the settings dir if it doesn't exist.
   fs.stat(conf.home, function (err, stat) {
