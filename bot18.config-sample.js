@@ -74,7 +74,7 @@ c.channel = "stable"
 //   Files written here will be chmod'ed 0600, subdirectories 0700.
 //   "~/" will be expanded to your home directory's absolute path,
 //   or a tmp directory, as a fallback.
-c.home = "/Users/carlos8f/.bot18"
+c.home = "~/.bot18"
 
 // Display ZalgoNet MOTD at startup. (Usually a news bulletin from @carlos8f)
 c.motd = true
