@@ -36,13 +36,7 @@ module.exports = function getEngine (cb) {
     // Support linking to a local engine copy for development.
     conf.channel = 'dev'
     bot18.engine = function dev_main () {
-      try {
-        require(r(process.cwd(), bot18.cmd.dev_engine))
-      }
-      catch (e) {
-        debug('dev_main err', e)
-        return cb(new Error('initializing dev engine. (Error code: THEJOKER)'))
-      }
+      require(r(process.cwd(), bot18.cmd.dev_engine))
     }
     return cb()
   }
@@ -174,7 +168,6 @@ module.exports = function getEngine (cb) {
           try {
             // Hand over the conf and pass control of the current process to the VM.
             // We can only do this safely now that the signature has been verified.
-            global.BOT18_CONF = conf
             var context = vm.createContext({
               global: global,
               console: console,
