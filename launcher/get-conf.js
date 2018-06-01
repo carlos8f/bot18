@@ -52,7 +52,7 @@ module.exports = function getConf (cb) {
     // Use debug module for bot output messages. Outputs to stderr.
     // bot18 --debug will output all debug() calls including those from dependencies.
     if (!process.env.DEBUG) {
-      process.env.DEBUG = conf.debug ? '*' : 'launcher,startup,stdin,execute,errors'
+      process.env.DEBUG = conf.debug ? '*' : 'launcher,engine,startup,stdin,execute,errors'
     }
     if (!process.env.DEBUG_DEPTH) {
       process.env.DEBUG_DEPTH = '10'
