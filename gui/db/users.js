@@ -1,13 +1,4 @@
 module.exports = function container (get, set) {
-  get('db.mongo.db').collection('users').createIndexes([
-    {
-      key: {
-        email: 1
-      },
-      name: 'email',
-      unique: true
-    }
-  ])
   return get('db.createCollection')('users', {
     load: function (obj, opts, cb) {
       // respond after the obj is loaded

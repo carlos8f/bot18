@@ -1,13 +1,4 @@
 module.exports = function container (get, set) {
-  get('db.mongo.db').collection('webhooks').createIndexes([
-    {
-      key: {
-        type: 1,
-        status: 1
-      },
-      name: 'type_status'
-    }
-  ])
   return get('db.createCollection')('webhooks', {
     load: function (obj, opts, cb) {
       // respond after the obj is loaded

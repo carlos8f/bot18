@@ -18,9 +18,6 @@ module.exports = {
   },
   'listen[]': function container (get, set) {
     return function task (cb) {
-      if (get('site.server').listening) {
-        get('console').log('listening on http://localhost:' + get('site.server').address().port + '/')
-      }
       setImmediate(cb)
     }
   },

@@ -64,7 +64,9 @@
   var bot18 = global.BOT18 = {
     pkg: pkg,
     conf: {},
-    lib: {}
+    lib: {},
+    __dirname: __dirname,
+    __filename: __filename
   }
   bot18.user_agent = 'bot18/v' + bot18.pkg.version
   // Perform all our warm-ups and run the engine.

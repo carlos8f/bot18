@@ -1,9 +1,7 @@
-var uuid = require('uuid/v4')
-var bcrypt = require('bcrypt')
+var bcryptjs = require('bcryptjs')
 var uuid = require('../lib/uuid')
 var isEmail = require('isemail').validate
 var pwTester = require('owasp-password-strength-test')
-var requestIp = require('request-ip')
 
 module.exports = function container (get, set) {
   return get('controller')()
@@ -32,7 +30,7 @@ module.exports = function container (get, set) {
           return next()
         }
         else {
-          bcrypt.compare(req.body.password, user.password, function (err, passwordOk) {
+          bcryptjs.compare(req.body.password, user.password, function (err, passwordOk) {
             if (err) {
               req.error('Unexpected server error while processing your request (error code: PIGGY). Please try again.')
               return next()
@@ -40,7 +38,7 @@ module.exports = function container (get, set) {
             if (passwordOk) {
               req.success('Welcome back, ' + user.username + '!')
               req.login(user)
-              return res.redirect('/beta')
+              return res.redirect('/dashboard')
             }
             else {
               req.error('Bad password.')
@@ -63,12 +61,12 @@ module.exports = function container (get, set) {
         username: (req.body.username || '').trim(),
         username_lc: (req.body.username || '').trim().toLowerCase(),
         time_registered: new Date().getTime(),
-        remote_ip: requestIp.getClientIp(req),
+        remote_ip: req.addr,
         last_access: new Date().getTime(),
         last_access_url: req.url,
         last_access_agent: req.headers['user-agent'],
         last_access_method: req.method,
-        last_access_ip: requestIp.getClientIp(req)
+        last_access_ip: req.addr
       }
       if (!req.body.email) {
         req.error('E-mail required.')
@@ -120,7 +118,7 @@ module.exports = function container (get, set) {
             req.error('Username already registered.')
             return next()
           }
-          bcrypt.hash(req.body.password, get('conf.auth.strength'), function (err, hash) {
+          bcryptjs.hash(req.body.password, get('conf.auth.strength'), function (err, hash) {
             if (err) return next(err)
             user.password = hash
             get('db.users').save(user, function (err, user) {
