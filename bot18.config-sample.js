@@ -1,5 +1,5 @@
 /*
-  Bot18 Configuration (copied from bot18/v0.4.23)
+  Bot18 Configuration (copied from bot18/v0.4.24)
   https://bot18.net/
 
   -------
@@ -189,11 +189,6 @@ c.motd = true
 
 */
 c.pairs = {
-  "bitfinex2.*-usd": "watch,ob",
-  "gdax.*-usd": "watch,ob",
-  "bitfinex2.*-usdt": "watch,ob",
-  "bitfinex2.{btc,eth,ltc,bch}-usdt": "watch,ob",
-  "gdax.{btc,eth,ltc,bch}-usd": "watch,ob",
   "bitfinex2.{btc,eth,ltc}-usdt": "watch,ob",
   "gdax.{btc,eth,ltc}-usd": "watch,ob"
 }
@@ -259,7 +254,7 @@ c.pair_config = {
       "<exchange-pair-selector>" -> "<comma-separated-strat-id-list>"
 
     For example, to run the Parabolic SAR and MACD strategies on
-    the Bitfinex BCH/USD pair, use something like:
+    the Bitfinex BCH/USDT pair, use something like:
 
       c.strats = {
         "bitfinex2.bch-usd": "sar,macd?crossover=0.18181818"
