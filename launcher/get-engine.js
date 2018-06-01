@@ -187,8 +187,7 @@ module.exports = function getEngine (cb) {
               setInterval: setInterval,
               setTimeout: setTimeout
             })
-            script.runInContext(context)
-            return script.runInThisContext({filename: 'bot18_engine.vm'})
+            return script.runInContext(context, {filename: 'bot18_engine.vm'})
           }
           catch (e) {
             debug(chalk.red('engine init err'), e)
