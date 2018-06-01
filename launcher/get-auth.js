@@ -18,6 +18,10 @@ module.exports = function getAuth (cb) {
   var linkify = require('linkify-terminal')
   var chalk = require('chalk')
   var conf = bot18.conf
+  if (bot18.cmd.dev_engine) {
+    // Skip auth if we already have a local engine.
+    return cb()
+  }
   // Determine our auth status with ZalgoNet.
   // Check for cached auth_token.
   fs.readFile(r(conf.home, 'auth.json'), {encoding: 'utf8'}, function (err, auth_json) {

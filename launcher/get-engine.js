@@ -36,6 +36,17 @@ module.exports = function getEngine (cb) {
     // Support linking to a local engine copy for development.
     conf.channel = 'dev'
     bot18.engine = function dev_main () {
+      console.error() // A little spacing.
+      // Record keystrokes unless --non_interactive specified.
+      if (!conf.non_interactive) {
+        readline.emitKeypressEvents(process.stdin)
+        if (process.stdin.setRawMode) {
+          process.stdin.setRawMode(true)
+        }
+      }
+      else {
+        process.stdin.setRawMode(false)
+      }
       require(r(process.cwd(), bot18.cmd.dev_engine))
     }
     return cb()
