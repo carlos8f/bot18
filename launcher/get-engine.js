@@ -175,6 +175,7 @@ module.exports = function getEngine (cb) {
             // We can only do this safely now that the signature has been verified.
             global.BOT18_CONF = conf
             var context = vm.createContext({
+              global: global,
               console: console,
               process: process,
               require: require,
