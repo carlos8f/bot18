@@ -71,6 +71,9 @@ module.exports = function getConf (cb) {
         conf[k] = conf[k].replace(/\~\//g, home + '/')
       }
     })
+    // Attach gui_codemap (must be required now,
+    // since npx yanks the filesystem out from under us)
+    bot18.gui_codemap = require(r(bot18.__dirname, 'gui', '_codemap'))
     // Execute the --save subcommand if present.
     if (bot18.cmd.save) {
       require(r(__dirname, 'save-conf'))(bot18.cmd.save, function (err, out_p) {
