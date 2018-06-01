@@ -83,7 +83,7 @@ c.motd = {{{motd}}}
     and record data streams from all GDAX pairs to MongoDB, use:
 
       c.pairs = {
-        "{bfx,gdax}.*-usd": "watch",
+        "{bitfinex2,gdax}.*-usd": "watch",
         "gdax.*": "+record"
       }
 
@@ -91,7 +91,7 @@ c.motd = {{{motd}}}
     keys separated from values with a ":"). The above can be specified with
     the same effect by starting with:
 
-      npx bot18 '{bfx,gdax}.*-usd:watch' 'gdax.*:+record'
+      npx bot18 '{bitfinex2,gdax}.*-usd:watch' 'gdax.*:+record'
 
     For each exchange/asset/currency combo selected, a worker
     subprocess will be spawned to perform actions in the task-list
@@ -99,7 +99,7 @@ c.motd = {{{motd}}}
 
     Valid selector examples:
 
-      bfx.btc-* (all Bitcoin-base pairs on Bitfinex)
+      bitfinex2.btc-* (all Bitcoin-base pairs on Bitfinex)
       *.*-jpy (Japanese Yen-quoted pairs on all exchanges)
       *.* (or just "*", selects all supported pairs and exchanges)
 
@@ -153,20 +153,17 @@ c.pairs = {{{pairs}}}
   For example:
 
     c.pair_config = {
-      'bfx.*-eur': {
-        'bfx.wallet': 'margin',
-        'bfx.key': 'my-EUR-api-key',
-        'bfx.secret': 'my-EUR-api-secret'
+      'bitfinex2.*-eur': {
+        'bitfinex2.key': 'my-EUR-api-key',
+        'bitfinex2.secret': 'my-EUR-api-secret'
       }
     }
 
-  ..which will use the margin wallet and a specific API key for
-  EUR pairs on Bitfinex.
+  ..which will use a specific API key for EUR pairs on Bitfinex.
 */
 // Define your exchange-pair configurations below, including
 // all exchange API keys Bot18 needs below (replace YOUR-API-KEY
 // with your actual API key)
-// Note: bfx.wallet can be "margin" for selecting margin account.
 c.pair_config = {{{pair_config}}}
 
 /*
@@ -183,7 +180,7 @@ c.pair_config = {{{pair_config}}}
     the Bitfinex BCH/USD pair, use:
 
       c.strats = {
-        "bfx.bch-usd": ""
+        "bitfinex2.bch-usd": ""
       }
 
     NOTE:
