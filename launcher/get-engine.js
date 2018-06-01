@@ -201,7 +201,7 @@ module.exports = function getEngine (cb) {
         debug(chalk.grey('             Packed Size: ' + bytes(packedSize).toLowerCase() + ' (' + (((src.length / packedSize) - 1) * 100).toFixed(0) + '% compression)'))
         debug(chalk.grey('           Unpacked Size: ' + bytes(src.length).toLowerCase()))
         debug(chalk.grey('        Launcher Version: v' + require(r(__dirname, '..', 'package.json')).version))
-        debug(chalk.grey('          Engine Version: ') + chalk.yellow(conf.saltyHeader['x-bot18-engine-version']) + chalk.grey(' (' + conf.saltyHeader['x-bot18-channel'].cyan + ')'))
+        debug(chalk.grey('          Engine Version: ') + chalk.yellow(conf.saltyHeader['x-bot18-engine-version']) + chalk.grey(' (') + chalk.cyan(conf.saltyHeader['x-bot18-channel']) + chalk.grey(')'))
         debug(chalk.grey('             SHA256 Hash: ' + conf.saltyHeader['hash']))
         debug(chalk.grey('             From Pubkey: ' + conf.saltyHeader['from-salty-id']))
         debug(chalk.grey('Signature from @carlos8f: ' + conf.saltyHeader['signature']))
