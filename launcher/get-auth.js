@@ -107,12 +107,12 @@ module.exports = function getAuth (cb) {
             case 200:
               if (body && body.exists === true) {
                 // Username is ok.
-                debug('Username '.grey + body.username.yellow + ' found.'.green)
+                debug(chalk.grey('Username ') + chalk.yellow(body.username) + chalk.green(' found.'))
                 return setTimeout(promptForPassword, 0)
                 break
               }
               else {
-                debug('Username '.grey + username.yellow + ' not found!'.red)
+                debug(chalk.grey('Username ') + chalk.yellow(username) + chalk.red(' not found!'))
                 return setTimeout(promptForUsername, 0)
               }
             case 429:
@@ -143,7 +143,7 @@ module.exports = function getAuth (cb) {
         pubkey: bot18.pubkey.pubkey
       }
     }
-    debug('Authenticating - Please stand by...'.grey)
+    debug(chalk.grey('Authenticating - Please stand by...'))
     bot18.lib.mr_post('https://code.bot18.net/auth/' + username, opts, function (err, resp, body) {
       if (err) {
         return cb(new Error('Your network connection is down. Please try again later.'))
