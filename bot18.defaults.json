@@ -3,18 +3,17 @@
   "motd": true,
   "home": "~/.bot18",
   "pairs": {
-    "bfx.*-usd": "watch",
-    "gdax.*-usd": "watch"
+    "bitfinex2.*-usd": "watch,ob",
+    "gdax.*-usd": "watch,ob"
   },
   "pair_config": {
-    "bfx.*": {
-      "bfx.key": "YOUR-API-KEY",
-      "bfx.secret": "YOUR-SECRET",
-      "bfx.wallet": "exchange"
+    "bitfinex2.*": {
+      "bitfinex2.apiKey": "YOUR-API-KEY",
+      "bitfinex2.secret": "YOUR-SECRET"
     },
     "gdax.*": {
-      "gdax.key": "YOUR-API-KEY",
-      "gdax.b64secret": "YOUR-BASE64-SECRET"
+      "gdax.apiKey": "YOUR-API-KEY",
+      "gdax.secret": "YOUR-SECRET"
     }
   },
   "strats": {

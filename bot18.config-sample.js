@@ -1,5 +1,5 @@
 /*
-  Bot18 Configuration (copied from bot18/v0.4.1)
+  Bot18 Configuration (copied from bot18/v0.4.18)
   https://bot18.net/
 
   -------
@@ -10,8 +10,9 @@
   using API keys that you add here. Bot18 will not be
   able to perform trades on your behalf unless you give
   the "trade" permission (or equivalent) to your API key.
-  Bot18 should also be able to "view" the account balance
-  and historical orders and fills.
+  For full functionality, give the "view" permission to
+  the key, to access account balance and historical orders
+  and fills.
 
   DO NOT give the "transfer" or "withdraw" permission to
   your API keys for use with Bot18, unless you really,
@@ -22,27 +23,28 @@
   -------
 
   The file bot18.config-sample.js represents the defaults.
+  These are copied to ~/.bot18/config.js when you invoke
+  Bot18 for the first time.
+
   Extend/override these variables by (in order of importance):
 
-      1. "custom": Specifying an arbitrary-location copy of this file with
+      1. "custom": An arbitrary-location copy of this file, with
          `npx bot18 --conf /path/to/my/bot18.config.js`
       2. "local": Copying this file to `bot18.config.js` in the same
          folder that your run the `npx bot18` command from
-      3. "home": Copying this file to `~/.bot18/config.js`
-      4. "global": Copying this file to `bot18.config.js` in the same
-         folder as bot18.config-sample.js, probably this will be
-         /usr/local/lib/node_modules/bot18
+      3. "home": Editing your account-wide config at `~/.bot18/config.js`
 
-  Bot18 will attempt to load configuration from all 4 locations,
+  Bot18 will attempt to load configuration from all 3 locations,
   and merge the results in order of importance.
 
   Additionally, you can save your current setup to
   a new configuration file, by adding the `--save` argument:
 
-    npx bot18 [--conf <my-custom-config.js>] --save ~/.bot18/config.js
+    npx bot18 --save my-custom.config.js
 
-  This will copy bot18.config-sample.js to ~/.bot18/config.js, and replace
-  the defaults with your merged settings from all 4 possible config locations.
+  This will copy bot18.config-sample.js to my-custom.config.js, replace
+  the defaults with your merged settings from all 3 possible config locations,
+  and chmod it 0600 all in one command. Pretty handy!
 */
 
 // Export a hash-map of configuration variables.
@@ -51,57 +53,66 @@ var c = module.exports = {}
 
 /*
   Section 1: Paths And Startup Options.
-*/
 
-// Engine version to use. Defaults to latest stable build.
-//   Also available: "unstable" (latest dev build) and
-//   "trial" (crippled free version)
+  Engine version to use. This takes effect only if you leave out the
+  `--channel <channel>` argument. Defaults to "stable".
+
+  Valid options:
+
+    - `stable` -- The latest stable release. This is only available
+      to ZalgoNet users who purchase a Bot18 Unlock Code.
+      See: https://bot18.net/beta
+    - `unstable` -- The latest dev build. You will need a `TEST` License
+      in your ZalgoNet account to select this option.
+    - `trial` -- A free 15-minute trial of Bot18, paper-trading mode only.
+      Available to everyone, also by entering "guest" at the ZalgoNet
+      login prompt.
+*/
 c.channel = "stable"
+
 // Directory for storing persistent settings, etc.
-//   Files written here will be chmod 0600, subdirectories 0700.
+//   Files written here will be chmod'ed 0600, subdirectories 0700.
 //   "~/" will be expanded to your home directory's absolute path,
 //   or a tmp directory, as a fallback.
 c.home = "~/.bot18"
+
 // Display ZalgoNet MOTD at startup. (Usually a news bulletin from @carlos8f)
 c.motd = true
 
 /*
-  Section 2: Pair->Task Mapping and Task Configuration.
+  Section 2.1: Exchange-Pair selection.
 
-    Bot18 runs a single master process which manages
-    all your subproceses for each asset/currency pair and exchange
-    you want to run.
+    Under the hood, Bot18 uses the CCXT project for exchange abstraction.
+    For a list of exchange IDs and symbols supported by CCXT, see this page:
 
-    Pairs are selected using a hash-map defined in c.pairs:
+      https://github.com/ccxt/ccxt/wiki/Manual
 
-      "exchange-pair-selector" -> "comma-separated-task-list"
+    Configuration in this file will follow the naming conventions set forth
+    by the CCXT project for the following:
 
-    Both key and value can contain glob patterns. See:
-    https://npmjs.org/package/minimatch
+      - Exchange ID (a short lowercased, one-word identifier)
+      - Symbol (an asset-currency pair identifer, such as `BTC/USD`)
+      - API Configuration (variables such as `apiKey`, `secret`, `id`,
+        and `password`)
 
-    For example, to watch all USD pairs on Bitfinex and GDAX,
-    and record data streams from all GDAX pairs to MongoDB, use:
+    In this config file, you will select exchange/asset/currency "pairs" to
+    run tasks on. These are selected using a hash-map defined in c.pairs:
 
       c.pairs = {
-        "{bfx,gdax}.*-usd": "watch",
-        "gdax.*": "+record"
+        <exchange-pair-selector>: <comma-separated-task-list>
       }
 
-    These pair selections can be overriden by CLI args (called "pair-specs",
-    keys separated from values with a ":"). The above can be specified with
-    the same effect by starting with:
+    An "exchange-pair-selector" is a string in the form:
 
-      npx bot18 '{bfx,gdax}.*-usd:watch' 'gdax.*:+record'
+      "<ccxt_exchange_id>.<lowercased_ccxt_dashed_symbol>"
 
-    For each exchange/asset/currency combo selected, a worker
-    subprocess will be spawned to perform actions in the task-list
-    relating to the target exchange.
+    A "lowercase_ccxt_dashed_symbol" is a string in the form:
 
-    Valid selector examples:
+      "{asset_id}-{currency_id}" (the CCXT Symbol with "/" replaced with "-")
 
-      bfx.btc-* (all Bitcoin-base pairs on Bitfinex)
-      *.*-jpy (Japanese Yen-quoted pairs on all exchanges)
-      *.* (or just "*", selects all supported pairs and exchanges)
+    A "comma-separated-task-list" is a string in the form:
+
+      "{bot18_task_id}[?optional&urlencoded=true&querystring=toinclude]"
 
     Valid tasks include:
 
@@ -110,11 +121,19 @@ c.motd = true
       watch:    Monitor public trade streams, candles, and stats.
       ob:       Keep a realtime orderbook mirror.
       record:   Record trades and orderbook snapshots to mongodb.
-      trade:    Keep track of account balance/portfolio,
-                  personal orders/fills, and enable (manual or auto) trading.
+      paper:    Keep a simulated account balance. Do not perform real trades.
+      trade:    Keep track of your real account balance/portfolio,
+                  personal orders/fills,
+                  and enable REAL (manual or auto) trading.
       auto:     Perform trades recommended by the strategy, without human input.
                   Turn on with "A" (capitalized) during `trade` task.
                   Turn off with "m" (any case) during `auto` task.
+
+      Note that "out of the box", Bot18 only enables the `watch` and `ob` tasks,
+      for only Bitfinex and Coinbase Pro exchanges. It's UP TO YOU to add
+      `trade` and `auto` tasks to your chosen exchange-pair selection to tell
+      the bot to perform automatic real trades recommended by your
+      selected strategy(s).
 
       (utility tasks)
 
@@ -124,85 +143,128 @@ c.motd = true
       train:    Train machine-learning models and exit.
       export:   Export data and exit.
 
+    Both keys and values here can use glob patterns. See:
+    https://npmjs.org/package/minimatch
+
+    Examples
+
+      For example, to watch all USD pairs on Bitfinex and GDAX, and record data
+      streams from all GDAX pairs to MongoDB, use something like:
+
+        c.pairs = {
+          "{bitfinex2,gdax}.*-usd": "watch",
+          "gdax.*": "+record"
+        }
+
+      These pair selections can be overriden by CLI args (called "pair-specs",
+      keys separated from values with a ":"). The above can be specified with
+      the same effect by starting with:
+
+        npx bot18 '{bitfinex2,gdax}.*-usd:watch' 'gdax.*:+record'
+
+      For each exchange/asset/currency combo selected, a worker
+      subprocess will be spawned to perform actions in the task-list
+      relating to the target exchange.
+
+      Valid selector examples:
+
+        bitfinex2.btc/* (all Bitcoin-base symbols on Bitfinex)
+        *.*-jpy (Japanese Yen-quoted symbols on all exchanges)
+        *.* (or just "*", selects all supported symbols and exchanges)
+
   Tips:
 
-  - Tasks can also have URL-encoded variables attached to them,
+  - Task IDs can also have URL-encoded variables attached to them,
       e.g.'*:trade?auto_short=true&buy_volume=1.5'
-  - Tasks can also be strategy names, to enable that strategy on the
-      selected pairs, e.g. '*:+macd?crossover=0.235'
-  - Putting "+" before a task name adds it to the task-list, "-" removes it.
+  - Task IDs can also be strategy IDs (info on those below), to enable that
+      strategy on the selected pair(s), e.g. '*:+macd?crossover=0.235'
+  - Putting "+" before a task_id adds it to the task-list, "-" removes it.
   - Wildcards "*" are valid in both keys and values.
 
   Examples:
 
+    Auto-trade LTC/USD and ETH/USD on Kraken using the macd strategy:
 
-  Auto-trade LTC/USD and ETH/USD on Kraken using the macd strategy:
-
-    npx bot18 kraken.{ltc,eth}-usd:+trade,auto,macd?crossover=0.235
+      npx bot18 kraken.{ltc,eth}/usd:+trade,auto,macd?crossover=0.235
 
 */
 c.pairs = {
-  "bfx.*-usd": "watch",
-  "gdax.*-usd": "watch"
+  "bitfinex2.*-usd": "watch,ob",
+  "gdax.*-usd": "watch,ob"
 }
 
 /**
+  Section 2.2: Exchange API Keys and Pair-specific Config.
+
   You can pass configuration variables targeted at specific
-  exchange-pair-selectors. This is how you configure your
-  exchange API keys. You can configure multiple API keys
-  for a given exchange, if you specify a specific asset/currency
-  in the exchange-pair-selector.
+  exchange-pair selectors. Incidentally, this is how you configure your
+  exchange API keys.
+
+  You can even configure multiple API keys for a given exchange,
+  if you specify a specific asset/currency in
+  the exchange-pair-selector.
 
   For example:
 
     c.pair_config = {
-      'bfx.*-eur': {
-        'bfx.wallet': 'margin',
-        'bfx.key': 'my-EUR-api-key',
-        'bfx.secret': 'my-EUR-api-secret'
+      'bitfinex2.*-eur': {
+        'bitfinex2.apiKey': 'my-EUR-api-key',
+        'bitfinex2.secret': 'my-EUR-api-secret'
       }
     }
 
-  ..which will use the margin wallet and a specific API key for
-  EUR pairs on Bitfinex.
+  ..which will use a specific API key for EUR pairs on Bitfinex.
+
+  Define your exchange-pair configurations below, including
+  all exchange API keys Bot18 needs below (replace "YOUR-API-KEY"
+  with your actual API key, etc.)
 */
-// Define your exchange-pair configurations below, including
-// all exchange API keys Bot18 needs below (replace YOUR-API-KEY
-// with your actual API key)
-// Note: bfx.wallet can be "margin" for selecting margin account.
 c.pair_config = {
-  "bfx.*": {
-    "bfx.key": "YOUR-API-KEY",
-    "bfx.secret": "YOUR-SECRET",
-    "bfx.wallet": "exchange"
+  "bitfinex2.*": {
+    "bitfinex2.apiKey": "YOUR-API-KEY",
+    "bitfinex2.secret": "YOUR-SECRET"
   },
   "gdax.*": {
-    "gdax.key": "YOUR-API-KEY",
-    "gdax.b64secret": "YOUR-BASE64-SECRET"
+    "gdax.apiKey": "YOUR-API-KEY",
+    "gdax.secret": "YOUR-SECRET"
   }
 }
+
 
 /*
   Section 3: Strategy Selection And Configuration.
 
+    A "strat" or Strategy in Bot18 slang, is a combination of
+    JavaScript code and JSON files, bundled into a directory
+    (and sometimes packaged as a git repository, npm package,
+    or tarball). This code tells the Bot18 engine, through the
+    Engine API, when to trade, and the specifics of those trades.
+
+      - Each strat has a machine-readable ID (`strat_id`),
+        consisting of lowercased alpha-numeric characters
+        and underscores.
+      - Each strat can define its own configuration variables,
+        which can be configured below in `c.strat_config`.
+
     Bot18 runs can run multiple strategies at once, mapped
-    arbitrarily to the selected pairs.
+    arbitrarily to your exchange-pair selections.
 
     Strategies are selected using a hash-map defined in c.strats:
 
-      "exchange-pair-selector" -> "comma-separated-strategy-name-list"
+      "<exchange-pair-selector>" -> "<comma-separated-strat-id-list>"
 
     For example, to run the Parabolic SAR and MACD strategies on
-    the Bitfinex BCH/USD pair, use:
+    the Bitfinex BCH/USD pair, use something like:
 
       c.strats = {
-        "bfx.bch-usd": ""
+        "bitfinex2.bch-usd": "sar,macd?crossover=0.18181818"
       }
 
     NOTE:
 
     Bot18 will NOT perform trades automatically, unless you specify
-    the task "auto" in the pairs task-list.
+    the task `auto` in the exchange-pair selector's task-list,
+    or enter "A" (capitalized) in your console during the `trade` task.
 */
 c.strats = {
   "*": "noop"
@@ -225,7 +287,7 @@ c.strats = {
 //Define your strat-specific config below:
 c.strat_config = {
   "noop": {
-    "test_var": 1.8181818
+    "test_var": 1.2353
   }
 }
 
@@ -294,9 +356,12 @@ c.port_mapping = {
 // Timeout durations.
 c.launch_timeout = 30000
 c.graceful_exit_timeout = 1000
-// Verify engine downloads from code.bot18.net against this "master" Salty pubkey.
-//   This should ALWAYS match the "Salty ID" displayed at the bottom of https://bot18.net/
-//   See: https://github.com/carlos8f/salty
+/*
+  Verify engine downloads from code.bot18.net against this "master"
+  Salty pubkey.
+  This should ALWAYS match the "Salty ID" displayed at the bottom
+  of https://bot18.net -- See: https://github.com/carlos8f/salty
+*/
 c.master_pubkey = "3t27msBTpN2Mn2LP68ZFLUUo3AN37aoGerUFPHdus9tFJg3hw7upmnY9c7nQ9fv1EFFF9nxiU9JzFSYPRAnx8Age"
 
 
