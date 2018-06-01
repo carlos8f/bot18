@@ -3,7 +3,7 @@
   "motd": true,
   "home": "~/.bot18",
   "pairs": {
-    "bitfinex2.*-usd": "watch,ob",
+    "bitfinex2.*-usdt": "watch,ob",
     "gdax.*-usd": "watch,ob"
   },
   "pair_config": {

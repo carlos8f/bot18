@@ -83,7 +83,7 @@ c.motd = {{{motd}}}
   Section 2.1: Exchange-Pair selection.
 
     Under the hood, Bot18 uses the CCXT project for exchange abstraction.
-    For a list of exchange IDs and symbols supported by CCXT, see this page:
+    For a list of Exchange IDs and Symbols supported by CCXT, see this page:
 
       https://github.com/ccxt/ccxt/wiki/Manual
 
@@ -148,11 +148,11 @@ c.motd = {{{motd}}}
 
     Examples
 
-      For example, to watch all USD pairs on Bitfinex and GDAX, and record data
+      For example, to watch all USD pairs on Kraken and GDAX, and record data
       streams from all GDAX pairs to MongoDB, use something like:
 
         c.pairs = {
-          "{bitfinex2,gdax}.*-usd": "watch",
+          "{kraken,gdax}.*-usd": "watch",
           "gdax.*": "+record"
         }
 
@@ -160,7 +160,7 @@ c.motd = {{{motd}}}
       keys separated from values with a ":"). The above can be specified with
       the same effect by starting with:
 
-        npx bot18 '{bitfinex2,gdax}.*-usd:watch' 'gdax.*:+record'
+        npx bot18 '{kraken,gdax}.*-usd:watch' 'gdax.*:+record'
 
       For each exchange/asset/currency combo selected, a worker
       subprocess will be spawned to perform actions in the task-list
@@ -168,9 +168,9 @@ c.motd = {{{motd}}}
 
       Valid selector examples:
 
-        bitfinex2.btc/* (all Bitcoin-base symbols on Bitfinex)
-        *.*-jpy (Japanese Yen-quoted symbols on all exchanges)
-        *.* (or just "*", selects all supported symbols and exchanges)
+        bitfinex2.btc/* (all Bitcoin-base pairs on Bitfinex)
+        *.*-jpy (Japanese Yen-quoted pairs on all exchanges)
+        *.* (or just "*", selects all supported pairs and exchanges)
 
   Tips:
 
