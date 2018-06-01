@@ -197,14 +197,14 @@ module.exports = function getEngine (cb) {
             process.exit(42)
           }
         }
-        debug(('             Engine decrypted successfully!').yellow)
-        debug(('             Packed Size: ' + bytes(packedSize).toLowerCase() + ' (' + (((src.length / packedSize) - 1) * 100).toFixed(0) + '% compression)').grey)
-        debug(('           Unpacked Size: ' + bytes(src.length).toLowerCase()).grey)
-        debug(('        Launcher Version: v' + require(r(__dirname, '..', 'package.json')).version).grey)
-        debug('          Engine Version: '.grey + conf.saltyHeader['x-bot18-engine-version'].yellow + ' ('.grey + conf.saltyHeader['x-bot18-channel'].cyan + ')'.grey)
-        debug(('             SHA256 Hash: ' + conf.saltyHeader['hash']).grey)
-        debug(('             From Pubkey: ' + conf.saltyHeader['from-salty-id']).grey)
-        debug(('Signature from @carlos8f: ' + conf.saltyHeader['signature']).grey)
+        debug(chalk.yellow('             Engine decrypted successfully!'))
+        debug(chalk.grey('             Packed Size: ' + bytes(packedSize).toLowerCase() + ' (' + (((src.length / packedSize) - 1) * 100).toFixed(0) + '% compression)'))
+        debug(chalk.grey('           Unpacked Size: ' + bytes(src.length).toLowerCase()))
+        debug(chalk.grey('        Launcher Version: v' + require(r(__dirname, '..', 'package.json')).version))
+        debug(chalk.grey('          Engine Version: ') + chalk.yellow(conf.saltyHeader['x-bot18-engine-version']) + chalk.grey(' (' + conf.saltyHeader['x-bot18-channel'].cyan + ')'))
+        debug(chalk.grey('             SHA256 Hash: ' + conf.saltyHeader['hash']))
+        debug(chalk.grey('             From Pubkey: ' + conf.saltyHeader['from-salty-id']))
+        debug(chalk.grey('Signature from @carlos8f: ' + conf.saltyHeader['signature']))
         console.error()
         bot18.engine = engine
         cb()
