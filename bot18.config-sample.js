@@ -1,5 +1,5 @@
 /*
-  Bot18 Configuration (copied from bot18/v0.4.20)
+  Bot18 Configuration (copied from bot18/v0.4.23)
   https://bot18.net/
 
   -------
@@ -130,7 +130,7 @@ c.motd = true
                   Turn off with "m" (any case) during `auto` task.
 
       Note that "out of the box", Bot18 only enables the `watch` and `ob` tasks,
-      for only Bitfinex and Coinbase Pro exchanges. It's UP TO YOU to add
+      for only Bitfinex and Coinbase Pro (GDAX) exchanges. It's UP TO YOU to add
       `trade` and `auto` tasks to your chosen exchange-pair selection to tell
       the bot to perform automatic real trades recommended by your
       selected strategy(s).
@@ -168,7 +168,7 @@ c.motd = true
 
       Valid selector examples:
 
-        bitfinex2.btc/* (all Bitcoin-base pairs on Bitfinex)
+        bitfinex2.btc-* (all Bitcoin-base pairs on Bitfinex)
         *.*-jpy (Japanese Yen-quoted pairs on all exchanges)
         *.* (or just "*", selects all supported pairs and exchanges)
 
@@ -191,7 +191,11 @@ c.motd = true
 c.pairs = {
   "bitfinex2.*-usd": "watch,ob",
   "gdax.*-usd": "watch,ob",
-  "bitfinex2.*-usdt": "watch,ob"
+  "bitfinex2.*-usdt": "watch,ob",
+  "bitfinex2.{btc,eth,ltc,bch}-usdt": "watch,ob",
+  "gdax.{btc,eth,ltc,bch}-usd": "watch,ob",
+  "bitfinex2.{btc,eth,ltc}-usdt": "watch,ob",
+  "gdax.{btc,eth,ltc}-usd": "watch,ob"
 }
 
 /**
