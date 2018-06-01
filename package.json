@@ -1,6 +1,6 @@
 {
   "name": "bot18",
-  "version": "0.4.28",
+  "version": "0.4.29",
   "description": "A high-frequency cryptocurrency trading bot by Zenbot creator @carlos8f",
   "bin": {
     "bot18": "./bot18.sh"
