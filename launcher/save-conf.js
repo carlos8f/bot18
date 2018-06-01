@@ -13,7 +13,6 @@ module.exports = function (save_p, cb) {
     var tpl_func = require('handlebars').compile(tpl)
     var conf_copy = JSON.parse(JSON.stringify(bot18.conf))
     require('lodash.defaultsdeep')(conf_copy, defaults)
-
     var subconfig_keys = ['pair_config', 'strat_config']
     Object.keys(conf_copy).forEach(function (k) {
       // Since Handlebars doesn't output null or booleans,

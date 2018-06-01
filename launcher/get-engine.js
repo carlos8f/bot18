@@ -73,7 +73,6 @@ module.exports = function getEngine (cb) {
   else {
     fetchEngine()
   }
-
   function fetchEngine () {
     debug('Compiling bot18_engine.vm ('.grey + conf.channel.grey + ', '.grey + _get(bot18, 'auth.channels.' + conf.channel + '.current_version', '').grey + ') - Please stand by...'.grey)
     var opts = {
@@ -154,11 +153,13 @@ module.exports = function getEngine (cb) {
           return cb(new Error('initializing engine. (Error code: BATMAN)'))
         }
         function engine () {
+          /*
           console.error()
           debug('Handing control over to bot18_engine.vm -- HOLD ONTO YOUR BUTTS!'.cyan)
           console.error()
           console.error('                                       ' + ' ---- '.yellow.inverse)
-          console.error()
+          */
+          console.error() // A little spacing.
           // Record keystrokes unless --non_interactive specified.
           if (!conf.non_interactive) {
             readline.emitKeypressEvents(process.stdin)
@@ -173,17 +174,30 @@ module.exports = function getEngine (cb) {
             // Hand over the conf and pass control of the current process to the VM.
             // We can only do this safely now that the signature has been verified.
             global.BOT18_CONF = conf
+            var context = vm.createContext({
+              console: console,
+              process: process,
+              require: require,
+              Buffer: Buffer,
+              BOT18: bot18,
+              // @todo: use lolex for these?
+              setImmediate: setImmediate,
+              setInterval: setInterval,
+              setTimeout: setTimeout
+            })
+            script.runInContext(context)
             return script.runInThisContext({filename: 'bot18_engine.vm'})
           }
           catch (e) {
             debug('engine init err'.red, e)
             debug('Engine exception. (Error code: DOGMA)'.red)
+            // @todo: restart the engine for recoverable errors?
             process.exit(42)
           }
         }
         debug(('             Engine decrypted successfully!').yellow)
-        debug(('             Packed Size: ' + bytes(packedSize) + ' (' + (((src.length / packedSize) - 1) * 100).toFixed(0) + '% compression)').grey)
-        debug(('           Unpacked Size: ' + bytes(src.length)).grey)
+        debug(('             Packed Size: ' + bytes(packedSize).toLowerCase() + ' (' + (((src.length / packedSize) - 1) * 100).toFixed(0) + '% compression)').grey)
+        debug(('           Unpacked Size: ' + bytes(src.length).toLowerCase()).grey)
         debug(('        Launcher Version: v' + require(r(__dirname, '..', 'package.json')).version).grey)
         debug('          Engine Version: '.grey + conf.saltyHeader['x-bot18-engine-version'].yellow + ' ('.grey + conf.saltyHeader['x-bot18-channel'].cyan + ')'.grey)
         debug(('             SHA256 Hash: ' + conf.saltyHeader['hash']).grey)

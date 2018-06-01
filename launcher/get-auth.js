@@ -70,7 +70,6 @@ module.exports = function getAuth (cb) {
       getNewAuth()
     }
   })
-
   // Request ZalgoNet credentials from stdin.
   function getNewAuth () {
     debug(' ' + ' Beep Boop, This is Bot18! '.yellow.inverse)
@@ -87,7 +86,6 @@ module.exports = function getAuth (cb) {
     console.error()
     getCreds()
   }
-
   function getCreds () {
     ;(function promptForUsername () {
       prompt('  Username: (CTRL-C to exit)'.grey + '\n      ', function (username) {
@@ -136,16 +134,12 @@ module.exports = function getAuth (cb) {
       })
     })()
   }
-
   // Log into ZalgoNet using username/password.
   function withCreds (username, password) {
     var opts = {
       data: {
         password: password,
         pubkey: bot18.pubkey.pubkey
-      },
-      headers: {
-        'user-agent': 'bot18/' + process.env.BOT18_LAUNCHER_VERSION
       }
     }
     debug('Authenticating - Please stand by...'.grey)

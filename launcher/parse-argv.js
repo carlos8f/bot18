@@ -29,10 +29,8 @@ module.exports = function (cb) {
     .option('--no_telemetry', 'Disable telemetry to ZalgoNet. CLOUD/SWARM features will be unavailable.')
     .option('--dev_engine <path>', 'Run a dev copy of the engine.')
     .option('--debug', 'Enable detailed output to stderr.')
-
   // Parse CLI args.
   cmd.parse(process.argv)
-
   // Add each arg as a pair-spec.
   // Implementation incomplete.
   bot18.conf.pairs = {}
