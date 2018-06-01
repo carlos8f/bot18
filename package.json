@@ -45,6 +45,7 @@
     "motley-mongo": "^2.0.5",
     "motley-templ": "^2.0.4",
     "node-telegram-bot-api": "^0.30.0",
+    "open": "0.0.5",
     "owasp-password-strength-test": "^1.3.0",
     "pempal": "^1.0.2",
     "runtrap": "^1.0.3",
@@ -122,6 +123,7 @@
     "motley-mongo",
     "motley-templ",
     "node-telegram-bot-api",
+    "open",
     "owasp-password-strength-test",
     "pempal",
     "runtrap",
@@ -131,8 +133,5 @@
     "timebucket",
     "uuid",
     "zero-fill"
-  ],
-  "devDependencies": {
-    "open": "0.0.5"
-  }
+  ]
 }
