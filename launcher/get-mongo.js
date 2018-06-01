@@ -28,7 +28,7 @@ module.exports = function getMongo (cb) {
     }
     require('mongodb').MongoClient.connect(connection_str, function (err, client) {
       if (err) {
-        console.error(('Failed to connect to MongoDB. Check your bot18.config.js and try again.').red)
+        return cb(new Error('Failed to connect to MongoDB. Check your bot18.config.js and try again.'))
       }
       bot18.mongo_client = client
       bot18.db = client.db(mongo_conf.db)

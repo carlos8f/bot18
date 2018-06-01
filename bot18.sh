@@ -56,18 +56,13 @@
     console.error('You are running a Node.js version older than 8.3.x. Please upgrade via https://nodejs.org/')
     process.exit(4)
   }
-  // Unleash the zalgo.
-  require('colors')
   // Export global BOT18 var. This var holds literally everything.
   // It's just an easy way of state-sharing between various parts of
   // Bot18, and passing vars to the engine VM, which is pre-compiled and acts as a
   // "main() within a main()", only having access to the global scope.
-  // Include a reference to require() so webpack doesn't try to shim it
-  // if we call it directly from the engine code.
   // This will contain live JS instances so don't try to JSON stringify it!
   var bot18 = global.BOT18 = {
     pkg: pkg,
-    require: global.require,
     conf: {},
     lib: {}
   }
@@ -88,7 +83,7 @@
   ], function (err) {
     if (err) {
       var msg = (err.stack || err)
-      console.error(msg.red)
+      console.error(require('chalk').red(msg))
       process.exit(5)
     }
     bot18.engine()

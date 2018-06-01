@@ -4,6 +4,7 @@ module.exports = function (save_p, cb) {
   var r = require('path').resolve
   var fs = require('fs')
   var vm = require('vm')
+  var chalk = require('chalk')
   var defaults = require(r(__dirname, '..', 'bot18.defaults.json'))
   defaults.pkg = bot18.pkg
   fs.readFile(r(__dirname, '..', 'bot18.config-sample.js.hbs'), {encoding: 'utf8'}, function (err, tpl) {
@@ -54,11 +55,11 @@ module.exports = function (save_p, cb) {
       var script = new vm.Script(out)
     }
     catch (e) {
-      bot18.debug('launcher')('save conf err', e)
+      bot18.debug('launcher')(chalk.red('save conf err'), e)
       return cb(new Error('Caught syntax error, refusing to write result.'))
     }
     var target_p = save_p === 'home' ? r(bot18.conf.home, 'config.js') : r(process.cwd(), save_p)
-    bot18.debug('launcher')(('Writing ' + target_p).grey)
+    bot18.debug('launcher')(chalk.grey('Writing ' + target_p))
     fs.writeFile(target_p, out, {encoding: 'utf8'}, function (err) {
       if (err) {
         return cb(err)

@@ -20,17 +20,18 @@ module.exports = function getWallet (cb) {
   var debug = require('debug')('launcher')
   var pempal = require('pempal')
   var salty = require('salty')
+  var chalk = require('chalk')
   var conf = bot18.conf
   // set up the settings dir if it doesn't exist.
   fs.stat(conf.home, function (err, stat) {
     if (err && err.code === 'ENOENT') {
-      debug('Creating ~/.bot18 (chmod 0700)'.grey)
+      debug(chalk.grey('Creating ~/.bot18 (chmod 0700)'))
       fs.mkdir(conf.home, parseInt('0700', 8), function (err) {
         if (err) return cb(err)
-        debug('Creating ~/.bot18/config.js (chmod 0600)'.grey)
+        debug(chalk.grey('Creating ~/.bot18/config.js (chmod 0600)'))
         require(r(__dirname, 'save-conf'))('home', function (err) {
           if (err) return cb(err)
-          debug('Creating ~/.bot18/builds (chmod 0700)'.grey)
+          debug(chalk.grey('Creating ~/.bot18/builds (chmod 0700)'))
           fs.mkdir(r(conf.home, 'builds'), parseInt('0700', 8), function (err) {
             if (err) return cb(err)
             withHome()
@@ -53,12 +54,12 @@ module.exports = function getWallet (cb) {
     fs.stat(id_salty_path, function (err, stat) {
       if (err && err.code === 'ENOENT') {
         // generate a new Salty wallet.
-        debug('Creating ~/.bot18/id_salty (chmod 0600)'.grey)
+        debug(chalk.grey('Creating ~/.bot18/id_salty (chmod 0600)'))
         bot18.wallet = salty.wallet.create()
         bot18.pubkey = bot18.wallet.pubkey
         fs.writeFile(id_salty_path, bot18.wallet.toPEM() + '\n', {mode: parseInt('0600', 8)}, function (err) {
           if (err) return cb(err)
-          debug('Creating ~/.bot18/id_salty.pub (chmod 0644)'.grey)
+          debug(chalk.grey('Creating ~/.bot18/id_salty.pub (chmod 0644)'))
           fs.writeFile(r(conf.home, 'id_salty.pub'), bot18.pubkey.pubkey + '\n', {mode: parseInt('0644', 8)}, function (err) {
             if (err) return cb(err)
             cb()

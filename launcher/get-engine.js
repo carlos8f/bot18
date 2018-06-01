@@ -30,6 +30,7 @@ module.exports = function getEngine (cb) {
   var readline = require('readline')
   var bytes = require('bytes')
   var _get = require('lodash.get')
+  var chalk = require('chalk')
   var conf = bot18.conf
   if (bot18.cmd.dev_engine) {
     // Support linking to a local engine copy for development.
@@ -65,7 +66,7 @@ module.exports = function getEngine (cb) {
       else {
         // Cache hit.
         bot18.engine_cache = 'hit'
-        debug(('Using cached engine at ~/.bot18/builds/' + bot18.etag + '.bot18').grey)
+        debug(chalk.grey('Using cached engine at ~/.bot18/builds/' + bot18.etag + '.bot18'))
         returnEngine(fs.createReadStream(p), stat.size)
       }
     })
@@ -74,7 +75,7 @@ module.exports = function getEngine (cb) {
     fetchEngine()
   }
   function fetchEngine () {
-    debug('Compiling bot18_engine.vm ('.grey + conf.channel.grey + ', '.grey + _get(bot18, 'auth.channels.' + conf.channel + '.current_version', '').grey + ') - Please stand by...'.grey)
+    debug(chalk.grey('Compiling bot18_engine.vm (' + conf.channel + ', ' + _get(bot18, 'auth.channels.' + conf.channel + '.current_version', '') + ') - Please stand by...'))
     var opts = {
       query: {
         channel: conf.channel
@@ -91,7 +92,7 @@ module.exports = function getEngine (cb) {
           if (resp.headers['etag']) {
             // also async pipe to the local cache location.
             var cache_p = path.join('builds', resp.headers['etag'] + '.bot18')
-            debug('Caching engine to ~/.bot18/'.grey + cache_p.grey + ' (chmod 0600)'.grey)
+            debug(chalk.grey('Caching engine to ~/.bot18/' + cache_p + ' (chmod 0600)'))
             body.pipe(fs.createWriteStream(r(conf.home, cache_p), {mode: parseInt('0600', 8)}))
           }
           return
@@ -128,12 +129,12 @@ module.exports = function getEngine (cb) {
         packedSize += buf.length
       })
       .once('error', function (err) {
-        debug('decrypt err'.red, err)
+        debug(chalk.red('decrypt err'))
         cb(new Error('Error decrypting/verifying engine download. The download might\'ve been corrupted or pirated. (Error code: BOWIE)'))
       })
       .pipe(zlib.createGunzip())
       .once('error', function (err) {
-        debug('gunzip err'.red, err)
+        debug(chalk.red('gunzip err'))
         cb(new Error('Error decompressing engine download. The download might\'ve been corrupted. (Error code: CASEYJONES)'))
       })
       .on('data', function (buf) {
@@ -141,7 +142,7 @@ module.exports = function getEngine (cb) {
       })
       .once('end', function () {
         if (!verified) {
-          debug('saltyHeader'.red, conf.saltyHeader)
+          debug(chalk.red('saltyHeader'), conf.saltyHeader)
           return cb(new Error('The engine download was signed with a pubkey different from conf.master_pubkey. It may have been tampered with. (Error code: TWINPEAKS)'))
         }
         var src = Buffer.concat(jsChunks).toString('utf8')
@@ -190,8 +191,8 @@ module.exports = function getEngine (cb) {
             return script.runInThisContext({filename: 'bot18_engine.vm'})
           }
           catch (e) {
-            debug('engine init err'.red, e)
-            debug('Engine exception. (Error code: DOGMA)'.red)
+            debug(chalk.red('engine init err'), e)
+            debug(chalk.red('Engine exception. (Error code: DOGMA)'))
             // @todo: restart the engine for recoverable errors?
             process.exit(42)
           }

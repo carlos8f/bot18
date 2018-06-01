@@ -16,6 +16,7 @@ module.exports = function getAuth (cb) {
   var debug = require('debug')('launcher')
   var prompt = require('cli-prompt')
   var linkify = require('linkify-terminal')
+  var chalk = require('chalk')
   var conf = bot18.conf
   // Determine our auth status with ZalgoNet.
   // Check for cached auth_token.
@@ -27,17 +28,17 @@ module.exports = function getAuth (cb) {
       // We have a cached auth_token, validate it with ZalgoNet
       try {
         bot18.auth = JSON.parse(auth_json)
-        debug('Using cached auth: ~/.bot18/auth.json'.grey)
+        debug(chalk.grey('Using cached auth: ~/.bot18/auth.json'))
       }
       catch (e) {
-        debug('Error parsing cached auth at ~/.bot18/auth.json'.red)
+        debug(chalk.red('Error parsing cached auth at ~/.bot18/auth.json'))
         return getNewAuth()
       }
       if (bot18.cmd.offline) {
         // Skip validation, avoid connection to ZalgoNet.
         return cb()
       }
-      debug('Validating cached auth with ZalgoNet - Please stand by...'.grey)
+      debug(chalk.grey('Validating cached auth with ZalgoNet - Please stand by...'))
       bot18.lib.mr_get('https://code.bot18.net/auth/' + bot18.auth.user_info.username, function (err, resp, body) {
         if (err) {
           return cb(new Error('Your network connection is down. Please try again later.'))
@@ -72,23 +73,23 @@ module.exports = function getAuth (cb) {
   })
   // Request ZalgoNet credentials from stdin.
   function getNewAuth () {
-    debug(' ' + ' Beep Boop, This is Bot18! '.yellow.inverse)
+    debug(' ' + chalk.yellow.inverse(' Beep Boop, This is Bot18! '))
     if (!bot18.auth) {
-      debug('      I\'m performing intial setup to connect your '.yellow + 'ZalgoNet'.cyan +' account.'.yellow)
-      debug('      Your information will be handled securely and encrypted whenever possible.'.yellow)
-      debug('      If you don\'t have a '.yellow + 'ZalgoNet'.cyan + ' account yet, sign up at: '.yellow + linkify('https://bot18.net/register', {pretty: true}).green)
+      debug(chalk.yellow('      I\'m performing intial setup to connect your ') + chalk.cyan('ZalgoNet') + chalk.yellow(' account.'))
+      debug(chalk.yellow('      Your information will be handled securely and encrypted whenever possible.'))
+      debug(chalk.yellow('      If you don\'t have a ') + chalk.cyan('ZalgoNet') + chalk.yellow(' account yet, sign up at: ') + chalk.green(linkify('https://bot18.net/register', {pretty: true})))
       //debug('      Here\'s a tip: enter "guest" for a 15-minute Bot18 trial!'.cyan)
     }
     else {
-      debug('      Your cached auth token expired, so I\'m trying to reconnect your '.yellow + 'ZalgoNet'.cyan + ' account.'.yellow)
-      debug('      Please re-enter your '.yellow + 'ZalgoNet'.cyan + ' credentials so we can authorize you:'.yellow)
+      debug(chalk.yellow('      Your cached auth token expired, so I\'m trying to reconnect your ') + chalk.cyan('ZalgoNet') + chalk.yellow(' account.'))
+      debug(chalk.yellow('      Please re-enter your ') + chalk.cyan('ZalgoNet') + chalk.yellow(' credentials so we can authorize you:'))
     }
     console.error()
     getCreds()
   }
   function getCreds () {
     ;(function promptForUsername () {
-      prompt('  Username: (CTRL-C to exit)'.grey + '\n      ', function (username) {
+      prompt(chalk.grey('  Username: (CTRL-C to exit)') + '\n      ', function (username) {
         username = (username || '').trim()
         if (!username) {
           return promptForUsername()
@@ -97,7 +98,7 @@ module.exports = function getAuth (cb) {
           return withCreds('guest', 'uNl3AsH tHe ZaLG0')
         }
         // Check if username exists.
-        debug('Searching '.grey + 'ZalgoNet'.cyan + ' - Please stand by...'.grey)
+        debug(chalk.grey('Searching ') + chalk.cyan('ZalgoNet') + chalk.grey(' - Please stand by...'))
         bot18.lib.mr_get('https://code.bot18.net/auth/' + username, {query: {check_username: true}}, function (err, resp, body) {
           if (err) {
             return cb(new Error('Your network connection is down. Please try again later.'))
@@ -122,7 +123,7 @@ module.exports = function getAuth (cb) {
               return cb(new Error('ZalgoNet is temporarily down. Please try again later.'))
           }
           function promptForPassword () {
-            prompt.password('  Password:'.grey + '\n      ', function (password) {
+            prompt.password(chalk.grey('  Password:') + '\n      ', function (password) {
               password = (password || '').trim()
               if (!password) {
                 return promptForPassword()
@@ -160,7 +161,7 @@ module.exports = function getAuth (cb) {
           return
         case 403:
           // Bad password.
-          debug('Bad password.'.red)
+          debug(chalk.red('Bad password.'))
           return getCreds()
         case 400:
           return cb(new Error('Invalid request to ZalgoNet. The REST API may have changed.'))
@@ -174,8 +175,8 @@ module.exports = function getAuth (cb) {
   }
 
   function withAuth () {
-    debug('Success!'.green + ' You are logged into '.grey + 'ZalgoNet'.cyan + ' as: '.grey + bot18.auth.user_info.username.yellow)
-    debug('Updating ~/.bot18/auth.json (chmod 0600)'.grey)
+    debug(chalk.green('Success!') + chalk.grey(' You are logged into ') + chalk.cyan('ZalgoNet') + chalk.grey(' as: ') + chalk.yellow(bot18.auth.user_info.username))
+    debug(chalk.grey('Updating ~/.bot18/auth.json (chmod 0600)'))
     fs.writeFile(r(conf.home, 'auth.json'), JSON.stringify(bot18.auth, null, 2), {encoding: 'utf8', mode: parseInt('0600', 8)}, function (err) {
       if (err) return cb(err)
       cb()
