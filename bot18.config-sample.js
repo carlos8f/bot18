@@ -1,5 +1,5 @@
 /*
-  Bot18 Configuration (copied from bot18/v0.4.18)
+  Bot18 Configuration (copied from bot18/v0.4.19)
   https://bot18.net/
 
   -------
