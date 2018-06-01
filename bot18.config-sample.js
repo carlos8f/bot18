@@ -1,5 +1,5 @@
 /*
-  Bot18 Configuration (copied from bot18/v0.4.19)
+  Bot18 Configuration (copied from bot18/v0.4.20)
   https://bot18.net/
 
   -------
@@ -74,7 +74,7 @@ c.channel = "stable"
 //   Files written here will be chmod'ed 0600, subdirectories 0700.
 //   "~/" will be expanded to your home directory's absolute path,
 //   or a tmp directory, as a fallback.
-c.home = "~/.bot18"
+c.home = "/Users/carlos8f/.bot18"
 
 // Display ZalgoNet MOTD at startup. (Usually a news bulletin from @carlos8f)
 c.motd = true
@@ -92,7 +92,7 @@ c.motd = true
 
       - Exchange ID (a short lowercased, one-word identifier)
       - Symbol (an asset-currency pair identifer, such as `BTC/USD`)
-      - API Configuration (variables such as `apiKey`, `secret`, `id`,
+      - API Configuration (variables such as `apiKey`, `secret`, `uid`,
         and `password`)
 
     In this config file, you will select exchange/asset/currency "pairs" to
@@ -300,7 +300,7 @@ c.strat_config = {
   For information on MongoDB, visit https://www.mongodb.com/
 */
 c.mongo = {}
-c.mongo.enabled = false
+c.mongo.enabled = true
 c.mongo.db = "bot18"
 c.mongo.host = process.env.MONGODB_PORT_27017_TCP_ADDR || "localhost"
 c.mongo.port = 27017
@@ -347,12 +347,13 @@ c.pushover = {
   These variables don't usually need changing,
   but they are here in case you want to have a custom setup.
 */
+// Increment this number to display a whole new palette of colors.
+c.color_scheme = 0
 // Internal port mapping.
 c.port_mapping = {
   "engine": "127.0.0.1:1818",
   "gui": "127.0.0.1:8018"
 }
-
 // Timeout durations.
 c.launch_timeout = 30000
 c.graceful_exit_timeout = 1000
