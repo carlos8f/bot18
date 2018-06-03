@@ -37,16 +37,6 @@ module.exports = function getEngine (cb) {
     conf.channel = 'dev'
     bot18.engine = function dev_main () {
       console.error() // A little spacing.
-      // Record keystrokes unless --non_interactive specified.
-      if (!conf.non_interactive) {
-        readline.emitKeypressEvents(process.stdin)
-        if (process.stdin.setRawMode) {
-          process.stdin.setRawMode(true)
-        }
-      }
-      else {
-        process.stdin.setRawMode(false)
-      }
       require(r(process.cwd(), bot18.cmd.dev_engine))
     }
     return cb()
@@ -166,16 +156,6 @@ module.exports = function getEngine (cb) {
           console.error('                                       ' + ' ---- '.yellow.inverse)
           */
           console.error() // A little spacing.
-          // Record keystrokes unless --non_interactive specified.
-          if (!conf.non_interactive) {
-            readline.emitKeypressEvents(process.stdin)
-            if (process.stdin.setRawMode) {
-              process.stdin.setRawMode(true)
-            }
-          }
-          else {
-            process.stdin.setRawMode(false)
-          }
           try {
             // Hand over the conf and pass control of the current process to the VM.
             // We can only do this safely now that the signature has been verified.
