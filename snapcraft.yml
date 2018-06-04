@@ -10,9 +10,11 @@ confinement: devmode
 
 apps:
   bot18:
-    command: bot18
+    command: npx bot18
+    daemon: simple
 
 parts:
   bot18:
     plugin: nodejs
     source: .
+
