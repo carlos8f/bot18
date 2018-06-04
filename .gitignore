@@ -1,3 +1,4 @@
+*.snap
 stage/*
 prime/*
 *.tar.bz2
