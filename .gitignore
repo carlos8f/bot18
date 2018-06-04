@@ -1,5 +1,7 @@
+stage/*
+prime/*
 *.tar.bz2
-parts
+parts/*
 .DS_Store
 bot18.config.js
 node_modules

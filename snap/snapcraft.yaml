@@ -8,13 +8,13 @@ grade: stable
 confinement: strict
 
 apps:
-  bot18:
-    command: ./bot18.sh
-    daemon: simple
+  node-service:
+    command: bin/bot18
 
 parts:
-  bot18:
+  launcher:
     plugin: nodejs
     source: .
+    node-engine: "10.3.0"
 
 icon: gui/public/assets/bot18_icon.png
