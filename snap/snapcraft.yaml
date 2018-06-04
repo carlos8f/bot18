@@ -13,6 +13,7 @@ apps:
     plugs: [network, network-bind]
   node-service:
     command: bin/bot18
+    plugs: [network, network-bind]
 
 parts:
   launcher:
