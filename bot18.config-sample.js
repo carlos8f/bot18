@@ -188,10 +188,7 @@ c.motd = true
       npx bot18 kraken.{ltc,eth}/usd:+trade,auto,macd?crossover=0.235
 
 */
-c.pairs = {
-  "bitfinex2.{btc,eth,ltc}-usdt": "watch,ob",
-  "gdax.{btc,eth,ltc}-usd": "watch,ob"
-}
+c.pairs = {}
 
 /**
   Section 2.2: Exchange API Keys and Pair-specific Config.
@@ -219,16 +216,7 @@ c.pairs = {
   all exchange API keys Bot18 needs below (replace "YOUR-API-KEY"
   with your actual API key, etc.)
 */
-c.pair_config = {
-  "bitfinex2.*": {
-    "bitfinex2.apiKey": "YOUR-API-KEY",
-    "bitfinex2.secret": "YOUR-SECRET"
-  },
-  "gdax.*": {
-    "gdax.apiKey": "YOUR-API-KEY",
-    "gdax.secret": "YOUR-SECRET"
-  }
-}
+c.pair_config = {}
 
 
 /*
@@ -266,9 +254,7 @@ c.pair_config = {
     the task `auto` in the exchange-pair selector's task-list,
     or enter "A" (capitalized) in your console during the `trade` task.
 */
-c.strats = {
-  "*": "noop"
-}
+c.strats = {}
 
 /**
   You can also pass configurations to each strategy.
@@ -285,11 +271,7 @@ c.strats = {
   ..which will customize the `macd` strategy's configuration.
 */
 //Define your strat-specific config below:
-c.strat_config = {
-  "noop": {
-    "test_var": 1.2353
-  }
-}
+c.strat_config = {}
 
 
 /*
@@ -300,17 +282,6 @@ c.strat_config = {
   For information on MongoDB, visit https://www.mongodb.com/
 */
 c.mongo = {}
-c.mongo.enabled = true
-c.mongo.db = "bot18"
-c.mongo.host = process.env.MONGODB_PORT_27017_TCP_ADDR || "localhost"
-c.mongo.port = 27017
-c.mongo.username = null
-c.mongo.password = null
-// Or to use a specific connection string,
-// customize and uncomment the following line:
-//c.mongo.server_uri = "mongodb://user@password:host/db?params"
-c.mongo.replica_set = null
-c.mongo.auth_mechanism = null
 
 /*
   Section 5: Internationalization and Localization
@@ -334,11 +305,7 @@ c.locality = "en"
 */
 
 // Pushover.net
-c.pushover = {
-  "enabled": false,
-  "api_token": "YOUR-API-TOKEN",
-  "user_key": "YOUR-USER-KEY"
-}
+c.pushover = {}
 
 
 /*
