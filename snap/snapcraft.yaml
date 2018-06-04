@@ -8,6 +8,8 @@ grade: stable
 confinement: strict
 
 apps:
+  bot18:
+    command: bin/bot18
   node-service:
     command: bin/bot18
 
