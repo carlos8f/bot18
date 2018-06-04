@@ -1,13 +1,20 @@
-name: bot18 # you probably want to 'snapcraft register <name>'
-version: '0.0' # just for humans, typically '1.2+git' or '1.3.2'
-summary: Bot18 is a high-frequency cryptocurrency trading bot. # 79 char long summary
+name: bot18
+version: git
+summary: A high-frequency cryptocurrency trading bot by Zenbot creator @carlos8f
 description: |
-  More info on Bot18: https://bot18.net/
+  More info available at: https://bot18.net/
 
-grade: devel # must be 'stable' to release into candidate/stable channels
-confinement: devmode # use 'strict' once you have the right plugs and slots
+grade: stable
+confinement: strict
+
+apps:
+  bot18:
+    command: npx bot18
+    daemon: simple
 
 parts:
   bot18:
-    # See 'snapcraft plugins'
-    plugin: nil
+    plugin: nodejs
+    source: .
+
+icon: gui/public/assets/bot18_icon.png
