@@ -1,0 +1,10 @@
+name: bot18
+version: '0.0'
+summary: Bot18 is a high-frequency cryptocurrency trading bot.
+description: 'More info on Bot18: https://bot18.net/
+
+  '
+architectures:
+- amd64
+confinement: devmode
+grade: devel

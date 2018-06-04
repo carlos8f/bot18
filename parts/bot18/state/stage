@@ -1,0 +1,10 @@
+!StageState
+directories: !!set {}
+files: !!set {}
+project_options: {}
+properties:
+  filesets: {}
+  override-stage: snapcraftctl stage
+  stage: ['*']
+scriptlet_metadata: !ExtractedMetadata
+  _data: {}
