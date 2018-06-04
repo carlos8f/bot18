@@ -10,12 +10,12 @@ confinement: strict
 apps:
   bot18:
     command: bin/bot18
-    plugs: [network, network-bind]
+    plugs: [network, network-bind, home]
   node-service:
     command: bin/bot18
     daemon: simple
     restart-condition: always
-    plugs: [network, network-bind]
+    plugs: [network, network-bind, home]
 
 parts:
   launcher:
