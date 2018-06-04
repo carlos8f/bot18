@@ -1,6 +1,6 @@
 name: bot18
 version: git
-summary: A high-frequency cryptocurrency trading bot by Zenbot creator @carlos8f
+summary: A high-frequency cryptocurrency trading bot.
 description: |
   More info available at: https://bot18.net/
 
@@ -9,7 +9,7 @@ confinement: strict
 
 apps:
   bot18:
-    command: npx bot18
+    command: ./bot18.sh
     daemon: simple
 
 parts:
