@@ -13,6 +13,8 @@ apps:
     plugs: [network, network-bind]
   node-service:
     command: bin/bot18
+    daemon: simple
+    restart-condition: always
     plugs: [network, network-bind]
 
 parts:
