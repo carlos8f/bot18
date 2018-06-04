@@ -1,4 +1,5 @@
 var bot18 = global.BOT18
+var r = require('path').resolve
 
 module.exports = {
   // meta
@@ -18,7 +19,7 @@ module.exports = {
   },
 
   'db.json{}': {
-    'path': require('path').resolve(bot18.conf.home, 'db.json'),
+    'path': r(bot18.conf.home, 'db.json'),
     'hashKeys': false
   },
 
@@ -32,9 +33,9 @@ module.exports = {
   },
 
   'middleware.templ.root{}': {
-    'cwd': require('path').resolve(bot18.__dirname, 'gui')
+    'cwd': r(bot18.__dirname, 'gui')
   },
   'middleware.buffet.root{}': {
-    'cwd': require('path').resolve(bot18.__dirname, 'gui')
+    'cwd': r(bot18.__dirname, 'gui')
   }
 }
