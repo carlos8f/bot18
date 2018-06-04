@@ -21,6 +21,6 @@ parts:
   launcher:
     plugin: nodejs
     source: .
-    node-engine: "10.3.0"
+    node-engine: "8.11.2"
 
 icon: gui/public/assets/bot18_icon.png
