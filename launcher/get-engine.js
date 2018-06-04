@@ -61,7 +61,7 @@ module.exports = function getEngine (cb) {
       else {
         // Cache hit.
         bot18.engine_cache = 'hit'
-        debug(chalk.grey('Using cached engine at ~/.bot18/builds/' + bot18.etag + '.bot18'))
+        debug(chalk.grey('Using cached engine at ' + p))
         returnEngine(fs.createReadStream(p), stat.size)
       }
     })
@@ -87,7 +87,7 @@ module.exports = function getEngine (cb) {
           if (resp.headers['etag']) {
             // also async pipe to the local cache location.
             var cache_p = path.join('builds', resp.headers['etag'] + '.bot18')
-            debug(chalk.grey('Caching engine to ~/.bot18/' + cache_p + ' (chmod 0600)'))
+            debug(chalk.grey('Caching engine to ' + r(conf.home, cache_p) + ' (chmod 0600)'))
             body.pipe(fs.createWriteStream(r(conf.home, cache_p), {mode: parseInt('0600', 8)}))
           }
           return

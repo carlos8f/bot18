@@ -32,10 +32,10 @@ module.exports = function getAuth (cb) {
       // We have a cached auth_token, validate it with ZalgoNet
       try {
         bot18.auth = JSON.parse(auth_json)
-        debug(chalk.grey('Using cached auth: ~/.bot18/auth.json'))
+        debug(chalk.grey('Using cached auth: ' + r(conf.home, 'auth.json')))
       }
       catch (e) {
-        debug(chalk.red('Error parsing cached auth at ~/.bot18/auth.json'))
+        debug(chalk.red('Error parsing cached auth at ' + r(conf.home, 'auth.json')))
         return getNewAuth()
       }
       if (bot18.cmd.offline) {
@@ -180,7 +180,7 @@ module.exports = function getAuth (cb) {
 
   function withAuth () {
     debug(chalk.green('Success!') + chalk.grey(' You are logged into ') + chalk.cyan('ZalgoNet') + chalk.grey(' as: ') + chalk.yellow(bot18.auth.user_info.username))
-    debug(chalk.grey('Updating ~/.bot18/auth.json (chmod 0600)'))
+    debug(chalk.grey('Updating ' + r(conf.home, 'auth.json') + ' (chmod 0600)'))
     fs.writeFile(r(conf.home, 'auth.json'), JSON.stringify(bot18.auth, null, 2), {encoding: 'utf8', mode: parseInt('0600', 8)}, function (err) {
       if (err) return cb(err)
       cb()
