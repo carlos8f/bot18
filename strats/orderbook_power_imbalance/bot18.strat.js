@@ -32,7 +32,7 @@ s.sell_mkt_delay = 520
 // if vwap_pct_bias drops below this, considered "urgent"
 s.urgent_max_vwap_pct_bias = '-3.0'
 
-// require this amount of buying in 500ms window to trigger sell_mkt
+// require this amount of buying in 500ms window to trigger buy_mkt
 s.buy_mkt_trigger = '40.0'
 // wait this for cancels before pulling buy_mkt trigger (in ms)
 s.buy_mkt_delay = 520
