@@ -14,7 +14,10 @@ Please be patient and stay tuned!
 
 ## We Are Online.
 
-Bot18 is "online" software, designed to be invoked without installing. The only pre-requisite is having [Node.js](https://nodejs.org/) >= 8.3.0 installed. The recommended way to launch is with the command:
+Bot18 is "online" software, designed to be invoked without installing. Cloning the repo will only take up space.
+The only pre-requisite is having [Node.js](https://nodejs.org/) >= 8.3.0 installed. 
+
+Just open a terminal or cmd prompt and type:
 
 ```sh
 $ npx bot18
