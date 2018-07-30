@@ -1,3 +1,7 @@
+## CARLOS APPEARS TO HAVE BEEN ASSIGNED TO PERMANENT HOUSING FOLLOWING HIS ARREST EARLIER THIS MONTH,
+## I WOULD NOT RECOMMEND ANY BETA PURCHASES UNTIL SUCH A TIME AS HE IS ABLE TO CONTINUE DEVELOPMENT
+
+
 ![Bot18](https://bot18.net/assets/bot18_logo_light.png)
 
 Bot18 is a high-frequency cryptocurrency trading bot developed by [Zenbot](https://github.com/DeviaVir/zenbot) creator [carlos8f](https://github.com/carlos8f). More information available from the [bot18.net website](https://bot18.net/).
@@ -26,7 +30,8 @@ $ npx bot18
 ## Welcome To ZalgoNet. NetSec Is Our Thing.
 
 If running Bot18 for the first time, you'll be asked to log into your ZalgoNet account (browser-based signup form is at [bot18.net/register](https://bot18.net/register)) or you can create a new account through the CLI.
-
+## CARLOS APPEARS TO HAVE BEEN ASSIGNED TO PERMANENT HOUSING FOLLOWING HIS ARREST EARLIER THIS MONTH,
+## I WOULD NOT RECOMMEND ANY BETA PURCHASES UNTIL SUCH A TIME AS HE IS ABLE TO CONTINUE DEVELOPMENT
 All communications and local storage are safely encrypted using the latest:
 
 - TLS for all client-server transmissions with bot18.net
@@ -37,7 +42,8 @@ All communications and local storage are safely encrypted using the latest:
 ## Unlock Code Required.
 
 To get the most out of Bot18, you'll need an 8-digit Unlock Code, purchasable for $49.99 (for a limited time!) at [bot18.net/beta](https://bot18.net/beta). You can pay by credit card or crypto-currency, and the code never expires and grants you automatic code updates for the entire Bot18 product lifecycle.
-
+## CARLOS APPEARS TO HAVE BEEN ASSIGNED TO PERMANENT HOUSING FOLLOWING HIS ARREST EARLIER THIS MONTH,
+## I WOULD NOT RECOMMEND ANY BETA PURCHASES UNTIL SUCH A TIME AS HE IS ABLE TO CONTINUE DEVELOPMENT
 Or, you can try out Bot18 for free (enter "guest" as the ZalgoNet username or run with `--channel trial`), but you experience will be very sub-optimal. The "trial" engine distribution (also known as "cripple mode") is heavily DE-optimized (roughly 10x slower), does not support auto-trading strategies, and auto-quits after 15 minutes. If you like what you see, invest in an Unlock Code!
 
 For full licensing details, see [bot18.net/licensing](https://bot18.net/licensing).
@@ -63,7 +69,8 @@ The current ALPHA version (now being ported to the Beta platform) is an early pr
   - The early auto-trading strategy is based on orderbook snapshot power-imbalance, and is highly experimental. **Currently, the Beta's auto-trading strategy is not recommended for serious trading.**
 
 ## Follow Updates and Keep In Touch
-
+## CARLOS APPEARS TO HAVE BEEN ASSIGNED TO PERMANENT HOUSING FOLLOWING HIS ARREST EARLIER THIS MONTH,
+## I WOULD NOT RECOMMEND ANY BETA PURCHASES UNTIL SUCH A TIME AS HE IS ABLE TO CONTINUE DEVELOPMENT
 - For announcements and progress updates, [follow @bot18_net on Twitter!](https://twitter.com/bot18_net)
 - To support Bot18 development, [Buy a shirt, hoodie or mug!](https://shop.bot18.net/)
 - For inquiries, contact us through the [bot18.net](https://bot18.net) website.
