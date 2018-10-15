@@ -1,5 +1,4 @@
-## CARLOS APPEARS TO HAVE BEEN ASSIGNED TO PERMANENT HOUSING FOLLOWING HIS ARREST EARLIER THIS MONTH,
-## I WOULD NOT RECOMMEND ANY BETA PURCHASES UNTIL SUCH A TIME AS HE IS ABLE TO CONTINUE DEVELOPMENT
+## @Discord: As per request (3199072) please transfer server ownership as requested
 
 
 ![Bot18](https://bot18.net/assets/bot18_logo_light.png)
