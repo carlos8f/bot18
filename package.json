@@ -11,7 +11,7 @@
   },
   "dependencies": {
     "@slack/client": "^4.2.2",
-    "async": "^2.6.1",
+    "async": "^3.2.2",
     "axon": "^2.0.3",
     "bcryptjs": "^2.4.3",
     "big.js": "^5.1.2",
